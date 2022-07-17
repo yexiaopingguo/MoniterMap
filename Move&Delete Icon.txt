@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js">
+</script>
+
+<script>
+    feather.replace()
+</script>
+
+<style>
+  .imgcontainer {
+         	width: 500px;
+         	height: 500px;
+         	margin: auto;
+      		display: flex;          
+          	overflow: hidden;
+          	position: relative;
+          }
+    .backgroundimg{
+    		width: 100%;
+            height: 100%;
+            position: absolute;
+    }
+    .element{
+    		width:auto;
+            height:auto;
+            margin-top: 100px;
+            margin-left:30px;
+            z-index: 1;
+            position:absolute;
+    }
+    .buttoncontainer{
+    		float:left;
+            background-color:#ced4da;
+            height: 500px;
+            width:120px;
+    	
+    }
+    .cancel{
+    	display:none
+    }
+    .rmenu{
+    height:auto;
+    width: 80px;
+    background: white;
+    display: none;
+    position: absolute;
+    border:1px;
+    z-index:5;
+    }
+
+</style>
+
+
+<head>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Language" content="zh-TW">
+<div style="background-color:#495057">
+<h1 style="color:white">點擊按鈕即可將Icon放置於鼠標當下位置
+<br />新增右鍵點擊icon顯示選單+移動、刪除功能</h1>
+</div>
+
+</head>
+
+
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+<div class="buttoncontainer">
+	<br />
+	<button class="smileyButton">smiley Face</button>
+    <br />
+    <br />
+    <button class="lampButton">Lamp</button>
+    <br />
+    <br />
+    <button class="cancel">cancel</button>
+</div>
+<div id="container" class="imgcontainer" >
+<img id="myImgId" class="backgroundimg" src="https://www.w3schools.com/tags/img_girl.jpg" />
+<!--<img id ="element" class="element" src="https://www.w3schools.com/tags/smiley.gif" >-->
+</div>
+
+<p>X:<span id="x"></span></p>
+<p>Y:<span id="y"></span></p>
+
+<div class="rmenu">
+	<ul style="list-style:none">
+    	<li class="movebtn" style="margin-left:-25px">移動</li>
+        <li class="deletebtn" style="margin-left:-25px">刪除</li>
+    </ul>
+</div>
+
+</body>
+
+
+<script>
+	var smileybtn=$('.smileyButton')[0];
+    var lampbtn=$('.lampButton')[0];
+    var smilesrc="https://www.w3schools.com/tags/smiley.gif";
+    var lampsrc="https://www.w3schools.com/images/lamp.jpg";
+    smileybtn.addEventListener("click", function(e){SelectIcon(smilesrc);});
+    lampbtn.addEventListener("click", function(e){SelectIcon(lampsrc);});
+    var cancel=$('.cancel')[0];
+    
+    function SelectIcon(iconsrc)
+    {
+    	
+        cancel.style.display='inline';
+        cancel.addEventListener("click", Cancel);
+		container.style.cursor=
+    	`url(${iconsrc}),pointer`;
+        container.onmousedown = function(e)
+        {GetCoordinates(e,iconsrc);};
+    
+    }
+    function Cancel(e)
+    {
+    	cancel.style.display="none";
+        container.style.cursor="default";
+        container.onmousedown = null;
+    }
+</script>
+
+<script>
+
+var container = document.getElementById("container");
+var rmenu=$('.rmenu')[0];
+
+container.oncontextmenu=function(e){return false;};
+document.onclick=HideRmenu;
+
+
+function GetCoordinates(e,iconsrc)
+{
+  var PosX = 0;
+  var PosY = 0;
+  
+  if (!e) var e = window.event;
+  if (e.offsetX || e.offsetY)
+  {
+    PosX = e.offsetX;//offsetX可以取得e的x值,(0,0)在左上角
+    PosY = e.offsetY;//同理
+  }
+  //var element=$('.element')[0];//jQuery取得物件的方法，這邊是取得class是element的所有物件，傳回串列，所以取串列的第一個
+  
+  var element=document.createElement("img");
+  element.className="element";
+  element.src=iconsrc;
+  //marginTop是該物件離父層物件的上方距離，marginLeft則是左方距離
+  //分別減去高度和寬度/2，可以達到物件中央=滑鼠位置
+  element.style.marginTop = PosY+"px";
+  element.style.marginLeft = PosX+"px";
+  
+  element.addEventListener('contextmenu', 
+  function(e){
+  	e.preventDefault();
+  	showrightmenu();
+    AddRmenuEvent(this);
+  	return false;});
+  
+  container.appendChild(element);
+  container.style.cursor='default';
+  container.onmousedown=null;
+  cancel.style.display='none';
+  
+  //設定下方顯示數字
+  document.getElementById("x").innerHTML=PosX;
+  document.getElementById("y").innerHTML=PosY;
+}
+function showrightmenu(){
+	var e=window.event;
+    	
+	rmenu.style.left = e.clientX + 'px';
+	rmenu.style.top = e.clientY + 'px';
+    rmenu.style.display = 'block';
+    
+    
+}
+function AddRmenuEvent(icon){
+	var movebtn=$('.movebtn')[0];
+    var deletebtn=$('.deletebtn')[0];
+    movebtn.onclick=MoveElement(icon);
+    deletebtn.onclick=function(){
+    	icon.remove();
+        container.style.cursor='default';
+    }
+}
+function MoveElement(icon){
+	//icon.style.display='none';
+	container.style.cursor=
+    `url(${icon.currentSrc}),pointer`;
+    container.onmousedown=function(e){
+    	icon.style.marginTop=e.offsetY+'px';
+        icon.style.marginLeft=e.offsetX+'px';
+        container.style.cursor='default';
+        container.onmousedown=null;
+    }
+}
+function HideRmenu(){
+	rmenu.style.display='none';
+}
+</script>
+
+
+</html>
