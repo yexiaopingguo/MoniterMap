@@ -17,32 +17,57 @@
         body {
             margin: 0;
             padding:0;
-            width:100%;
-            height:100%;
             overflow:hidden;
-            background-color: rgba(255, 0, 0, 0.064);
+            background-color: rgb(255, 0, 0);
         }
         
         /* 头部样式 */
         .header {
             background-color: #f1f1f1;
             padding: 5px;
-            text-align: left;
+            border-bottom-style:solid;
+	        border-color:#0099ff;
+			height: auto;
+			display: flex;
+            clear: both;
         }
 
-        /* 中间的列内容 */
+		/* 头部的三部分内容 */
+		.header .h_content_left {
+            width: 20%;
+        }
+		.header .h_content_middle {
+            width: 50%;
+            padding: 0px;
+            overflow-x: auto;
+        }
+		.header .h_content_right {
+            width: 30%;
+            text-align:right;
+        }
+
+        /* 按钮边框设置为无 */
+		.btn-default{
+			border-style:none;
+            background-color:transparent;
+		}
+
+        /* 中间两个列的内容 */
         .raw .content_left {
             float: left;
             width: 20%;
-            height: 100vh;
-            background-color: #b6a2dc;
+            height: 95vh;
+            padding: 40px;
+            background-color: #f1f1f1;
+            overflow-y:auto;
         }
  
         .raw .content_right {
             float: left;
             width: 80%;
-            height: 100vh;
-            background-color: #9ee2ac;
+            height: 95vh;
+            padding: 0;
+            background-color: #ffffff;
         }
 
         /* 列后清除浮动 */
@@ -50,20 +75,65 @@
             display: table;
             clear: both;
         }
-
     </style>
+
+    <script>
+        function startTime(){
+            var today=new Date();
+            var h=today.getHours();
+            var m=today.getMinutes();
+            var s=today.getSeconds();// 在小于10的数字前加一个‘0’
+            m=checkTime(m);
+            s=checkTime(s);
+            document.getElementById('time').innerHTML=h+":"+m+":"+s;
+            t=setTimeout(function(){startTime()},500);
+        }
+        function checkTime(i){
+            if (i<10){
+                i="0" + i;
+            }
+            return i;
+        }
+    </script>
 </head>
 
-<body>
-
-
+<body onload="startTime()">
+    <!-- 头部 -->
     <div class="header">
-        <h1>MonitorDemoWeb</h1>
+		<div class="h_content_left">
+            <h2 style = "text-align:left;">MonitorDemo</h2>
+		</div>
+		<div class="h_content_middle">
+            <p></p>
+            <p>test</p>
+		</div>
+		<div class="h_content_right">
+            <p>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-volume-up"></span>
+                </button>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-user"></span>
+                </button>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-cog"></span>
+                </button>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-scale"></span>
+                </button>
+            </p>
+            <div id="time"></div>
+		</div>
     </div>
 
+    <!-- 内容 -->
     <div class="raw">
-        <div class="content_left">第1个元素中的内容</div>
-        <div class="content_right">第2个元素中的内容</div>
+        <div class="content_left">
+            <p>test</p>
+        </div>
+        <div class="content_right">
+            <p>test</p>
+        </div>
     </div>
 
 </body>
