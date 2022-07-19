@@ -18,15 +18,13 @@
             margin: 0;
             padding:0;
             overflow:hidden;
-            background-color: rgb(255, 0, 0);
+            background-color: #f1f1f1;
         }
         
-        /* 头部样式 */
+        /* !!!头部样式!!! */
         .header {
             background-color: #f1f1f1;
             padding: 5px;
-            border-bottom-style:solid;
-	        border-color:#0099ff;
 			height: auto;
 			display: flex;
             clear: both;
@@ -38,8 +36,6 @@
         }
 		.header .h_content_middle {
             width: 50%;
-            padding: 0px;
-            overflow-x: auto;
         }
 		.header .h_content_right {
             width: 30%;
@@ -52,32 +48,60 @@
             background-color:transparent;
 		}
 
-        /* 中间两个列的内容 */
-        .raw .content_left {
+        /* !!!导航栏的内容!!! */
+        .navigationer .navigationer_left {
             float: left;
             width: 20%;
-            height: 95vh;
+            height: 4.8vh;
+            padding: 0px;
+            background-color: #f1f1f1;
+            border-bottom-style:solid;
+	        border-color:#0099ff;
+        }
+        .navigationer .navigationer_right {
+            float: left;
+            width: 80%;
+            height: 4.8vh;
+            padding: 0;
+            background-color: #f1f1f1;
+            overflow-x:auto;
+            border-bottom-style:solid;
+	        border-color:#0099ff;
+        }
+        .navigationer:after {
+            display: table;
+            clear: both;
+        }
+
+        /* !!!中间两个列的内容!!! */
+        .content_raw .content_left {
+            float: left;
+            width: 20%;
+            height: 90vh;
             padding: 40px;
             background-color: #f1f1f1;
             overflow-y:auto;
         }
- 
-        .raw .content_right {
+        .content_raw .content_right {
             float: left;
             width: 80%;
-            height: 95vh;
+            height: 90vh;
             padding: 0;
             background-color: #ffffff;
         }
 
         /* 列后清除浮动 */
-        .row:after {
+        .content_row:after {
             display: table;
             clear: both;
         }
     </style>
 
     <script>
+        function init(){
+            startTime();
+            console.log("Init Successfully!");
+        }
         function startTime(){
             var today=new Date();
             var h=today.getHours();
@@ -97,15 +121,13 @@
     </script>
 </head>
 
-<body onload="startTime()">
+<body onload="init()">
     <!-- 头部 -->
     <div class="header">
 		<div class="h_content_left">
             <h2 style = "text-align:left;">MonitorDemo</h2>
 		</div>
 		<div class="h_content_middle">
-            <p></p>
-            <p>test</p>
 		</div>
 		<div class="h_content_right">
             <p>
@@ -125,11 +147,58 @@
             <div id="time"></div>
 		</div>
     </div>
-
+    <!-- 导航栏 -->
+    <div class="navigationer">
+        <div class="navigationer_left">
+        </div>
+        <div class="navigationer_right">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#">设备管理</a></li>
+                <li><a href="#">预览(1)</a></li>
+                <li><a href="#">预览(2)</a></li>
+                <li><a href="#">+</a></li>
+            </ul>
+        </div>
+    </div>
     <!-- 内容 -->
-    <div class="raw">
+    <div class="content_raw">
         <div class="content_left">
             <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>The End</p>
         </div>
         <div class="content_right">
             <p>test</p>
