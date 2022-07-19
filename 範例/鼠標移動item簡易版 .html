@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<!--使用說明:點擊圖片即可將笑臉移至鼠標當下位置-->
+<br />
+<br />
+<style>
+  .imgcontainer {
+         	width: 500px;
+         	height: 500px;
+         	margin: auto;
+      		display: flex;          
+          	overflow: hidden;
+          	position: relative;
+          }
+    .backgroundimg{
+    		width: 100%;
+            height: 100%;
+            position: absolute;
+    }
+    .element{
+    		width:50px;
+            height:50px;
+            margin-top: 100px;
+            margin-left:30px;
+            z-index: 1;
+    }
+</style>
+<h1>點擊圖片即可將笑臉移至鼠標當下位置</h1>
+<div id="container" class="imgcontainer" >
+<img id="myImgId" class="backgroundimg" src="https://www.w3schools.com/tags/img_girl.jpg" />
+<img id ="element" class="element"src="https://www.w3schools.com/tags/smiley.gif" >
+</div>
+<script type="text/javascript">
+
+//設定container的onmousedown事件
+var container = document.getElementById("container");
+container.onmousedown = GetCoordinates;
+
+function GetCoordinates(e)
+{
+  var PosX = 0;
+  var PosY = 0;
+  
+  if (!e) var e = window.event;
+  if (e.offsetX || e.offsetY)
+  {
+    PosX = e.offsetX;//offsetX可以取得e的x值,(0,0)在左上角
+    PosY = e.offsetY;//同理
+  }
+  var element=$('.element')[0];//jQuery取得物件的方法，這邊是取得class是element的所有物件，傳回串列，所以取串列的第一個
+  
+  //取得element的高，寬度
+  var element_width=element.width;
+  var element_height=element.height;
+  
+  //marginTop是該物件離父層物件的上方距離，marginLeft則是左方距離
+  //分別減去高度和寬度/2，可以達到物件中央=滑鼠位置
+  element.style.marginTop = (PosY-(element_height/2))+"px";
+  element.style.marginLeft = (PosX-(element_width/2))+"px";
+  
+  //設定下方顯示數字
+  document.getElementById("x").innerHTML=PosX;
+  document.getElementById("y").innerHTML=PosY;
+}
+</script>
+
+
+
+<p>X:<span id="x"></span></p>
+<p>Y:<span id="y"></span></p>
+</html>

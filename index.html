@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MonitorDemoWeb</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 以下引用 bootstrap3.4.1、jquery3.6.0 框架，注意jquery.js要在bootstrap.js前 -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-3.6.0.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+    <!-- 以下包含 背景body模板的css、js ，目前無引用-->
+    <!-- 以下包含 功能的css、js ，目前無引用-->
+    <!-- 我暫時把style寫在這下面，之後爲了簡潔，會把css和js獨立到文件夾裏面，不會放在index.html -->
+
+    <style>
+        /* 设置板块之间无边缘,且固定屏幕，无滚轮条 */
+        body {
+            margin: 0;
+            padding:0;
+            width:100%;
+            height:100%;
+            overflow:hidden;
+            background-color: rgba(255, 0, 0, 0.064);
+        }
+        
+        /* 头部样式 */
+        .header {
+            background-color: #f1f1f1;
+            padding: 5px;
+            text-align: left;
+        }
+
+        /* 中间的列内容 */
+        .raw .content_left {
+            float: left;
+            width: 20%;
+            height: 100vh;
+            background-color: #b6a2dc;
+        }
+ 
+        .raw .content_right {
+            float: left;
+            width: 80%;
+            height: 100vh;
+            background-color: #9ee2ac;
+        }
+
+        /* 列后清除浮动 */
+        .row:after {
+            display: table;
+            clear: both;
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+    <div class="header">
+        <h1>MonitorDemoWeb</h1>
+    </div>
+
+    <div class="raw">
+        <div class="content_left">第1个元素中的内容</div>
+        <div class="content_right">第2个元素中的内容</div>
+    </div>
+
+</body>
+</html>
