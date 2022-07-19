@@ -14,3 +14,5 @@
 2、所有的檔案都分類放在文件夾，已經下載bootstrap、jquery放在對應的文件夾中，以後就不需要用CDN的形式。
 
 3、文立的功能我放在範例當中，github可以預覽html，我就刪了txt格式，如果需要可以從github的commit裏面看過去記錄檔案。
+
+![avatar](https://github.com/yexiaopingguo/MoniterMap/blob/main/img/index.png)
