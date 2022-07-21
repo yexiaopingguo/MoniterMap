@@ -19,19 +19,23 @@
 
 </head>
 <body onload="init()">
+<!--###############################################################################-->
     <!--此區域為最頂端(header)-->
     <div class="row header merge-padding-no col-12" >
+        <!-- 此區塊為標題名稱區塊位於最左方 -->
         <div class="col-2 header-left container-h-md">
             <p class="header-title">Super <b>MAP</b></p>
         </div>
+        <!-- 此區塊為地圖頁面切換區域 -->
         <div class="col-7">
             <div class="btn-group botton-set">
-                <button type="button" class="btn btn-primary">Primary</button>
-                <button type="button" class="btn btn-primary">Primary</button>
-                <button type="button" class="btn btn-primary">Primary</button>
-                <button type="button" class="btn btn-primary">Primary</button>
+                <button type="button" class="btn btn-primary border-dark">Primary</button>
+                <button type="button" class="btn btn-primary border-dark">Primary</button>
+                <button type="button" class="btn btn-primary border-dark">Primary</button>
+                <button type="button" class="btn btn-primary border-dark">Primary</button>
             </div>
         </div>
+        <!-- 此區域為使用者設定功能區域 -->
         <div class="col-3 container-h-md justify-content-end ">
             <button type="button" class="btn mr-3">
                 <img class="img-icon" src="../icon/sound-close.png">
@@ -48,19 +52,29 @@
             <span id="time" class="time mr-3"></span>      
         </div>
     </div>
+<!--###############################################################################-->
 
+<!--###############################################################################-->
     <div class="row container-fluid merge-padding-no col-12">
-          <div class="col-2 content-left">
+        <div class="col-2 content-left">
             <form class="form-inline mr-auto search-item">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                <button class="btn btn-unique btn-rounded btn-sm " type="submit">Search</button>
+                <button class="btn btn-sm btn-secondary" type="submit">Search</button>
             </form>
-          </div>
-          <div class="col-10">
+            <div class="" >
+                <button class="btn btn-set border border-dark" type="button" id="group-btn">
+                    <img src="../icon/arrow.png" class="img-icon">
+                    <span class="group-text-set">默認分組</span>
+                </button>
+            </div>
+        </div>
+        <!-- 主要地圖功能的操作位置 -->
+        <div class="col-10">
+            <!--此區域為地圖編輯中央menu 負責"退出介面"、"儲存檔案"、"新增地圖"、"編輯地圖"--> 
             <div class="row content-menu container-h-md">
                 <div class="col-3">
                     <button class="btn" type="button" id="back-btn"><img src="../icon/return.png" class="img-icon"></button>
-                </div>
+                </div>                
                 <div class="col-6 d-flex justify-content-center">
                     <button class="btn mr-3 " type="button" id="save-btn"><img src="../icon/download.png" class="img-icon"></button>
                     <button class="btn mr-3" type="button" id="add-btn"><img src="../icon/new-folder.png" class="img-icon"></button>
@@ -73,11 +87,12 @@
                     </div>
                 </div>
             </div>
-            <main>
-                <img class="map-img" src="">
-            </main>
-          </div>
+            <!-- 主要的圖片放置區域 -->
+            <div class="main-loc">
+                <img class="map-main-img" src="../map-img/thu.JPG">
+            </div>
+        </div>
     </div>
-
+<!--###############################################################################-->
 </body>
 </html>

@@ -14,20 +14,18 @@
     font-size: 40px;
     font-family: "Times New Roman", Times, serif;
 }
+
+/* 按鈕靠header底 */
 .botton-set{
     position: fixed;
     bottom: 90vh;
-}
-
-.header-btn{
-    color: white;
-    font-size: 20px;
 }
 
 .time{
     color: white;
     font-size: 20px;
 }
+
 /*test*/
 .showBG1{
     background-color: rgb(255, 0, 0);
@@ -83,19 +81,42 @@ body {
 
 /*btn*/
 
-/* .btn-set{
+.btn-set{
     background-color: transparent;
     background-repeat: no-repeat;
     border: none;
     cursor: pointer;
     overflow: hidden;
     outline: none;
+} 
+
+.map-main-img{
+    width: 1120px;
+    height: 630px;
+    overflow: hidden;
+}
+
+.main-loc{
+    position: fixed;
+    right: 20vh;
+    bottom: 10vh;
+}
+
+/* .img-small{
+    width: 10px;
+    height: 10px;
 } */
-
-
 
 .range-text-set{
     color: white;
     font-size: 15px;
     font-family: "Times New Roman", Times, serif;
 }
+
+.group-text-set{
+    color: rgb(76, 76, 76);
+    font-size: 15px;
+    font-family: "Times New Roman", Times, serif;
+}
+
+
