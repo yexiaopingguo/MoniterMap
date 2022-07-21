@@ -1,20 +1,27 @@
-/*header*/
+/*上方標題*/
 .header{
     height: 10vh;
     padding: 5px;
     display: flex;
-    align-items: center;
     border-bottom-style:solid;
-    border-color:#ffe605;
+    border-color:#21a2ff;
     background-color: rgba(0, 0, 0, 0.75);
 }
+
+/* 標題字的樣式 */
 .header-title{
     color: white;
     font-size: 40px;
     font-family: "Times New Roman", Times, serif;
 }
-.header-right{
-    text-align: right;
+.botton-set{
+    position: fixed;
+    bottom: 90vh;
+}
+
+.header-btn{
+    color: white;
+    font-size: 20px;
 }
 
 .time{
@@ -22,8 +29,11 @@
     font-size: 20px;
 }
 /*test*/
-.showBG{
-    background-color: yellow;
+.showBG1{
+    background-color: rgb(255, 0, 0);
+}
+.showBG2{
+    background-color: rgb(255, 0, 221);
 }
 
 /*body*/
@@ -40,16 +50,22 @@ body {
 .content-left {
     overflow: auto;
     height: 90vh;
-    background-color: rgb(107, 171, 255);
+    background-color: rgba(255, 182, 55, 0.85);
 }
+
 .search-item{
     padding: 10px;
+}
+
+.merge-padding-no{
+    margin:0;
+    padding:0
 }
 
 /* 中央區塊menu */
 .content-menu{
     height: 7vh;
-    background-color: rgb(0, 47, 108);
+    background-color: rgb(0, 47, 108 , 1);
 }
 
 /* 高度置中 */
@@ -67,14 +83,16 @@ body {
 
 /*btn*/
 
-.btn-set{
+/* .btn-set{
     background-color: transparent;
     background-repeat: no-repeat;
     border: none;
     cursor: pointer;
     overflow: hidden;
     outline: none;
-}
+} */
+
+
 
 .range-text-set{
     color: white;

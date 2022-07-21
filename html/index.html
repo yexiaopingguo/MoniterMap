@@ -20,61 +20,64 @@
 </head>
 <body onload="init()">
     <!--此區域為最頂端(header)-->
-    <div class="row header" >
-        <div class="col-md-2 header-left">
+    <div class="row header merge-padding-no col-12" >
+        <div class="col-2 header-left container-h-md">
             <p class="header-title">Super <b>MAP</b></p>
         </div>
-        <div class="col-md-8 header-md">
-            
+        <div class="col-7">
+            <div class="btn-group botton-set">
+                <button type="button" class="btn btn-primary">Primary</button>
+                <button type="button" class="btn btn-primary">Primary</button>
+                <button type="button" class="btn btn-primary">Primary</button>
+                <button type="button" class="btn btn-primary">Primary</button>
+            </div>
         </div>
-        <div class="col-md-2 header-right">
-            <button type="button" class="btn">
+        <div class="col-3 container-h-md justify-content-end ">
+            <button type="button" class="btn mr-3">
                 <img class="img-icon" src="../icon/sound-close.png">
             </button>
-            <button type="button" class="btn">
+            <button type="button" class="btn mr-3">
                 <img class="img-icon" src="../icon/user.png">
             </button>
-            <button type="button" class="btn">
+            <button type="button" class="btn mr-3">
                 <img class="img-icon" src="../icon/settings.png">
             </button>
-            <button type="button" class="btn">
+            <button type="button" class="btn mr-3">
                 <img class="img-icon" src="../icon/speedometer.png">
             </button>
-            <span id="time" class="time"></span>      
+            <span id="time" class="time mr-3"></span>      
         </div>
     </div>
 
-    <div class="row">
-            <!--此區域為主功能選單與搜尋區域 組織樹與搜尋區域-->
-        <div class="col-md-2 content-left ">            
+    <div class="row container-fluid merge-padding-no col-12">
+          <div class="col-2 content-left">
             <form class="form-inline mr-auto search-item">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
                 <button class="btn btn-unique btn-rounded btn-sm " type="submit">Search</button>
             </form>
-        </div>
-            <!--此區域為地圖編輯中央menu 負責"退出介面"、"儲存檔案"、"新增地圖"、"編輯地圖"-->
-        <div class="col-md-10 content-menu container-h-md">
-            <div class="row col-sm">
-                <button class="btn" type="button" id="back-btn"><img src="../icon/return.png" class="img-icon"></button>
+          </div>
+          <div class="col-10">
+            <div class="row content-menu container-h-md">
+                <div class="col-3">
+                    <button class="btn" type="button" id="back-btn"><img src="../icon/return.png" class="img-icon"></button>
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    <button class="btn mr-3 " type="button" id="save-btn"><img src="../icon/download.png" class="img-icon"></button>
+                    <button class="btn mr-3" type="button" id="add-btn"><img src="../icon/new-folder.png" class="img-icon"></button>
+                    <button class="btn mr-3" type="button" id="edit-btn"><img src="../icon/edit.png" class="img-icon"></button>
+                </div>
+                <div class="col-sm d-flex justify-content-end ">
+                    <div class="">
+                        <label for="customRangeTrans" class="range-text-set mr-3 ">透明度</label>
+                        <input type="range" class="form-range " min="0" max="100" step="1" id="customRangeTrans">
+                    </div>
+                </div>
             </div>
-            <div class="row col-sm justify-content-center mr-3">
-                <button class="btn mr-3" type="button" id="save-btn"><img src="../icon/download.png" class="img-icon"></button>
-                <button class="btn mr-3" type="button" id="add-btn"><img src="../icon/new-folder.png" class="img-icon"></button>
-                <button class="btn mr-3" type="button" id="edit-btn"><img src="../icon/edit.png" class="img-icon"></button>
-            </div>
-            <div class="col-sm ">
-                <div class=" float-right">
-                    <label for="customRangeTrans" class="range-text-set mr-3 ">透明度</label>
-                    <input type="range" class="form-range " min="0" max="100" step="1" id="customRangeTrans">
-                </div>               
-            </div>
-        </div>
+            <main>
+                <img class="map-img" src="">
+            </main>
+          </div>
     </div>
-
-    
-
-
-
 
 </body>
 </html>
