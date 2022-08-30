@@ -1,0 +1,23 @@
+{
+  "main":"server.js",
+  "dependencies": {
+    "@popperjs/core": "^2.11.5",
+    "alert": "^5.1.1",
+    "async": "^3.2.4",
+    "body-parser": "^1.20.0",
+    "express": "^4.18.1",
+    "ffmpeg": "^0.0.4",
+    "fs": "^0.0.1-security",
+    "multer": "^1.4.5-lts.1",
+    "node-rtsp-stream": "^0.0.9",
+    "path": "^0.12.7",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  },
+  "scripts": {
+    "server_autorestart":"nodemon autores ./server.js",
+    "nodemon":"nodemon -h"
+  }
+}
