@@ -153,7 +153,7 @@
                                                     <label for="map-Name">舊的地圖名稱</label>
                                                     <script src="./js/editFileNameShowSelect.js"></script>
                                                     <!-- 引用./js/editFileNameShowSelect.js檔案來讀取所有地圖名稱並顯示在下方option -->
-                                                    <select class="form-control" id="mapNameListSelectId" name="selectMapName">
+                                                    <select required class="form-control" id="mapNameListSelectId" name="selectMapName">
                                                         <!-- <option></option> -->
                                                     </select>
                                                 </div>
@@ -195,10 +195,23 @@
                                     <div class="modal-body">
                                         <!-- 此為標單內容 -->
                                             <div class="form-group">
-                                                <label for="map-Name">舊的地圖名稱</label>
-                                                <script src="./js/editFileNameShowSelect.js"></script>
-                                                <!-- 引用./js/editFileNameShowSelect.js檔案來讀取所有地圖名稱並顯示在下方option -->
-                                                <select class="form-control" id="mapNameListSelectId" name="selectMapName">
+                                                <label for="map-Name">地圖名稱</label>                        
+                                                <!-- 引用./js/editFileNameShowSelect.js檔案來讀取地圖名稱並顯示在下方option -->
+                                                <select required class="form-control" id="devic_map_name" name="selectMapName" onchange="deviceClassShowOption()">
+                                                    <!-- <option></option> -->
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="map-Name">設備類別</label>                        
+                                                <!-- 引用./js/editFileNameShowSelect.js檔案來讀取地圖名稱並顯示在下方option -->
+                                                <select required class="form-control" id="devic_class_name" name="selectItemClass" onchange="deviceNameShowOption()">
+                                                    <!-- <option></option> -->
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="map-Name">設備名稱</label>                        
+                                                <!-- 引用./js/editFileNameShowSelect.js檔案來讀取地圖名稱並顯示在下方option -->
+                                                <select required class="form-control" id="devic_item_name" name="selectItemName" onchange="deviceNameShowOption()">
                                                     <!-- <option></option> -->
                                                 </select>
                                             </div>
