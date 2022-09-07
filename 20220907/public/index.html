@@ -258,6 +258,7 @@
             </div>          
         </div>
     </div>
+    <!--以下選單預設不出現 而是透過事件呼叫顯示-->
     <!--右鍵選單-->
     <div class="rmenu">
         <ul style="list-style:none;margin: auto;padding:0">
@@ -267,7 +268,7 @@
         </ul>
     </div>
     <!--icon更新表單-->
-    <form class="iconform" method="post" action="/iconform" enctype="application/x-www-form-urlencoded">
+    <form class="iconform" method="post" action="/iconform" enctype="application/x-www-form-urlencoded" style="display:none">
         <input id="mapname" type="text" name="mapname_v">
         <input id="iconlist" type="text" name="iconlist_v">
         <button type="submit" class="iconsubmitbtn">Send</button>
@@ -280,6 +281,7 @@
         <canvas id="canvas_5000" class="mainscreen"  ></canvas>
         
     </div>
+    <!--設備資料表單-->
     <div class="deviceInfoContainer">
         <div class="deviceinfo">
             <label class="infolabel">設備名稱</label>
@@ -293,6 +295,30 @@
             <button class="device_cancelbtn">取消</button>
             <button class="device_resetbtn">重設</button>
             <button class="device_submitbtn">確定</button>
+        </div>
+    </div>
+    <!--呼叫刪除地圖視窗之button-->
+    <button class="btn mr-3" data-toggle="modal"  data-target="#deletemapConfirm" type="button" id="deletemapbtn" style="display:none"></button>
+    <!--刪除地圖確認視窗-->
+    <div class="modal fade" id="deletemapConfirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <!--modal必要 對話框 -->
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <!--modal必要 內容區塊 在此區寫出想要顯示的對話視窗-->
+            <div class="modal-content" >
+                <!-- header 告知對話框目的 並且有關閉按鈕-->
+                <div class="modal-header">
+                    <h5 class="modal-title">確認刪除?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="deletemap_cancel">取消</button>
+                        <button type="submit" class="btn btn-primary" id="deletemap_confirm" >確定</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 <!--###############################################################################-->

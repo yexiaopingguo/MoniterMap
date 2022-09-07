@@ -138,14 +138,29 @@ function Addmaps(){ //功能為:使用讀取到的json檔案資料創建地圖
 
         //創建map之下的icon清單之div
         let iconlistdiv=document.createElement('div')
-        //創建map button
+        //創建包含map和delete的div
+        let mapdiv=document.createElement('div')
+        //創建map ,delete button
         var map=document.createElement("button")
+        var deletebtn=document.createElement("img")
+
+        //設定mapdiv屬性值
+        mapdiv.className="btn_wide_standard"
+        mapdiv.style.display='flex'
+        mapdiv.id=mapname+'_div'
+
+        //設定map屬性值與click事件
         map.className="btn btn-link button_slide slide_left btn_wide_standard active" //使用bootstrap的btn模板
         map.textContent= mapname //button的顯示名稱(innerText)
         map.id=mapname //設定button id
-
         map.addEventListener('click',(e)=>{ //將button綁定click事件
 
+            //判斷當前為展開or摺疊狀態
+
+            //當按下任一map按鈕時，將lastclick設為按下之按鈕之名稱
+            //當下一次按下map按紐時，即可利用lastclick判斷當前按下之按鈕是否為上次按下之按鈕
+            //如果是，則將展開/摺疊狀態反轉
+            //如果不是，則直接設定為展開狀態
             if(e.target.id==lastclick){
                 iconlistshowing=!iconlistshowing
             }
@@ -173,11 +188,38 @@ function Addmaps(){ //功能為:使用讀取到的json檔案資料創建地圖
             screen.style.display='none';
             
         })
+        //設定刪除按鈕之屬性與click事件
+        deletebtn.src='../icon/delete.png'
+        deletebtn.className='MapDeleteBtn button_slide slide_left'
+        deletebtn.id=mapname+'_delete'
+        
+        deletebtn.addEventListener('click',(e)=>{
+            //取得當前按下之刪除按鈕之id，並利用split 取得對應mapname
+            let targetid=e.target.id
+            let targetmap=targetid.split('_')[0]
 
+            //設定刪除確認表單之確認按鈕click事件
+            $('#deletemap_confirm')[0].onclick=()=>{
+
+                //移除當前地圖div，並傳送request到後端(server.js)，後端做刪除json檔案資料
+                document.getElementById(targetmap+'_div').remove();
+                $.getJSON(`/DeleteMap?mapname=${targetmap}`)
+
+                //完成後觸發取消按鍵，關閉表單
+                $('#deletemap_cancel')[0].click()
+            }
+
+            //開啟刪除確認表單(按下隱藏的呼叫表單按鈕)
+            $('#deletemapbtn')[0].click()
+            
+        })
+        
         iconlistdiv.className=mapname+' div' //設定iconlistdiv之class
-
+        //將map,delebtn加入mapdiv
+        mapdiv.appendChild(map)
+        mapdiv.appendChild(deletebtn)
         //插入map iconlistdiv在btntitle上方
-        leftdiv.insertBefore(map,btntitle) 
+        leftdiv.insertBefore(mapdiv,btntitle) 
         leftdiv.insertBefore(iconlistdiv,btntitle)
         
     }

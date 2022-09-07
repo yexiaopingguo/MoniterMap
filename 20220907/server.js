@@ -109,7 +109,8 @@ app.post('/iconform',(req,res)=>{
     
 });
 
-var Stream = require('node-rtsp-stream')
+var Stream = require('node-rtsp-stream');
+const { json } = require('body-parser');
 var streamlist={}
 for(let url in devicedict){
     streamlist[url]=new Stream({
@@ -210,4 +211,14 @@ app.post("/editFilePost", (req,res)=>{
     
     console.log("Rename Successful!");
     return res.redirect('back')//刷新頁面  
+})
+//刪除地圖
+app.get('/DeleteMap',(req,res)=>{
+    let TargetMap=req.query.mapname//取得req傳送之mapname參數
+    delete jsonData[TargetMap]//刪除對應地圖資料
+    //寫入json檔案
+    var jsonarr=JSON.stringify(jsonData)
+    fs.writeFileSync('public/maps/maplist.json',jsonarr)  
+    //回傳204狀態碼
+    res.sendStatus(204)
 })
