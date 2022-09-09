@@ -321,6 +321,26 @@
             </div>
         </div>
     </div>
+
+    <!--呼叫server斷線視窗之button-->
+    <button class="btn mr-3" data-toggle="modal"  data-target="#ServerDead" type="button" id="serverdeadbtn" style="display:none"></button>
+    <!--刪除地圖確認視窗-->
+    <div class="modal fade" id="ServerDead" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <!--modal必要 對話框 -->
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <!--modal必要 內容區塊 在此區寫出想要顯示的對話視窗-->
+            <div class="modal-content" >
+                <!-- header 告知對話框目的 並且有關閉按鈕-->
+                <div class="modal-header">
+                    <h5 class="modal-title">伺服器已斷線 請重新開啟</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
 <!--###############################################################################-->
 <!--載入自訂js-->
 <script src="js/jsmpeg.min.js"></script>

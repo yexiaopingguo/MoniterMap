@@ -54,6 +54,8 @@ var lastclick=''//紀錄按下的地圖名稱
 
 var ipstatusdict={}//存放ip以及其最新狀態的dict
 
+var serverdead=false//紀錄server是否斷線
+
 //取得本地json檔資料
 
 //儲存map以及其對應的icon資料的json檔
@@ -88,6 +90,15 @@ fetch('device_and_port.json').
     })
 
 function main() {
+
+    //每隔1秒檢查一次server狀態
+    setInterval(() => {
+
+        //如果server沒斷線，則執行檢查
+        if(!serverdead){
+            checkserver('http://localhost:3000')
+        }
+    }, 1000);
 
     Addmaps();//使用讀取到的資料來創建map
     
@@ -712,3 +723,20 @@ function MapExist(){
         alert('地圖已存在')
     }
 }
+
+function checkserver(url) {
+    // 定義 Http request
+    var req = new XMLHttpRequest()
+    //發送get請求至url
+    req.open('GET', url)
+
+    //當請求失敗時觸發事件
+    req.onerror=()=>{
+        console.log('error')
+        $('#serverdeadbtn')[0].click();
+        serverdead=true
+    }
+    /////////
+
+    req.send()//發送請求
+  }
