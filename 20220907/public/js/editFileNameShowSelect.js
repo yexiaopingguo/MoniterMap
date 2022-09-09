@@ -11,9 +11,9 @@ fetch('maps/maplist.json').
     })
     .then((data) => {
         jsonData = data; //將讀取到的資料存入jsonData
-        mapNameOption(); //執行自訂之main function
-        deviceClassShowOption();
-        deviceNameShowOption();
+        mapNameOption(); //表單顯示地圖選項
+        deviceClassShowOption();//表單顯示類別選項
+        deviceNameShowOption();//表單顯示名稱選項
 
     })
     .catch(err => {
@@ -115,10 +115,9 @@ function deviceNameShowOption(){
             }
         }
     }catch(e){
-        console.log(e + "deviceNameShowOption()");
+        console.log(e + "錯誤於deviceNameShowOption()");
     }
-    console.log("deviceNameShowOption()");
-    // console.log(res_map);
+    
 
     
 }

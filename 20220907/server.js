@@ -223,7 +223,7 @@ app.get('/DeleteMap', (req, res) => {
     res.sendStatus(204)
 })
 
-
+//新增設備表單ip
 app.post('/addItemLinkPost', (req, res) => {
     try {
         var mapName = req.body.selectMapName;
@@ -241,7 +241,7 @@ app.post('/addItemLinkPost', (req, res) => {
         // console.log(deviceName)
         // console.log(deviceIp)
 
-        //依照地圖內設備數量找到
+        //依照地圖內設備數量為範圍 找到該選取設備
         for (var i = 0; i < jsonData[mapName]['icons'].length; i++) {
             if ((jsonData[mapName]['icons'][i].class == deviceClass)
                 && (jsonData[mapName]['icons'][i].name == deviceName)) {
