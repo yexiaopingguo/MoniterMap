@@ -235,7 +235,7 @@ app.post('/addItemLinkPost', (req, res) => {
         let deviceIp = req.body.addItemIpName;
         //取得設備IP
 
-        // console.log('/addItemLinkPost')
+        console.log('/addItemLinkPost work !')
         // console.log(mapName)
         // console.log(deviceClass)
         // console.log(deviceName)
@@ -268,10 +268,14 @@ app.post('/addItemLinkPost', (req, res) => {
 app.post('/addNewDevicPost', (req, res) => {
     try{
         //地圖名稱 selectMapNameNewDevice 預期要能夠抓到
-        let mapGG = req.body.selectMapNameNewDevice;
+        let mapGG = req.body.selectNewDeviceMapName;
+        var a = req.body.selectDeviceKind;
+        console.log('/addNewDevicPost')
         console.log(mapGG)
+        console.log(a)
     }catch(e){
  
     }
+    return res.redirect('back')//刷新頁面 
 })
 
