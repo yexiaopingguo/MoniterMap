@@ -226,13 +226,13 @@ app.get('/DeleteMap', (req, res) => {
 //新增設備表單ip
 app.post('/addItemLinkPost', (req, res) => {
     try {
-        var mapName = req.body.selectMapName;
+        let mapName = req.body.selectMapName;
         //取得地圖名稱
-        var deviceClass = req.body.selectItemClass;
+        let deviceClass = req.body.selectItemClass;
         //取得設備類別
-        var deviceName = req.body.selectItemName;
+        let deviceName = req.body.selectItemName;
         //取得設備名稱
-        var deviceIp = req.body.addItemIpName;
+        let deviceIp = req.body.addItemIpName;
         //取得設備IP
 
         // console.log('/addItemLinkPost')
@@ -242,7 +242,7 @@ app.post('/addItemLinkPost', (req, res) => {
         // console.log(deviceIp)
 
         //依照地圖內設備數量為範圍 找到該選取設備
-        for (var i = 0; i < jsonData[mapName]['icons'].length; i++) {
+        for (let i = 0; i < jsonData[mapName]['icons'].length; i++) {
             if ((jsonData[mapName]['icons'][i].class == deviceClass)
                 && (jsonData[mapName]['icons'][i].name == deviceName)) {
                 jsonData[mapName]['icons'][i].url = deviceIp;
@@ -252,7 +252,7 @@ app.post('/addItemLinkPost', (req, res) => {
         }
 
         //轉成json格式
-        var jsonarr = JSON.stringify(jsonData);
+        let jsonarr = JSON.stringify(jsonData);
         //寫入本地json檔案
         fs.writeFileSync('public/maps/maplist.json', jsonarr)
 
@@ -262,3 +262,16 @@ app.post('/addItemLinkPost', (req, res) => {
     }
     return res.redirect('back')//刷新頁面 
 })
+
+
+//主頁面表單 新增設備資料 
+app.post('/addNewDevicPost', (req, res) => {
+    try{
+        //地圖名稱 selectMapNameNewDevice 預期要能夠抓到
+        let mapGG = req.body.selectMapNameNewDevice;
+        console.log(mapGG)
+    }catch(e){
+ 
+    }
+})
+

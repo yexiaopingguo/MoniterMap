@@ -24,6 +24,8 @@ function mapNameOption(){
     for(var key in jsonData){
         $('#mapNameListSelectId').append('<option value="'+ key + '" >' + key + '</option>');
         $('#devic_map_name').append('<option value="'+ key + '" >' + key + '</option>');
+        $('#new_devic_map_name').append('<option value="'+ key + '" >' + key + '</option>');
+
     }
 }
 

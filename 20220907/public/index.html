@@ -231,6 +231,53 @@
                             </div>
                         </div>
                     </div>
+                    <button class="btn mr-3" data-toggle="modal" data-target="#addDeviceModal" type="button" id="add-btn"><img src="icon/add.png" data-toggle="tooltip" data-placement="top" title="新增設備" class="img-icon"></button>
+                        <!--modal必要 開啟對話視窗進行檔案新增-->
+                        <div class="modal fade" id="addDeviceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <!--modal必要 對話框 -->
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <!--modal必要 內容區塊 在此區寫出想要顯示的對話視窗-->
+                                <div class="modal-content" >
+                                    <!-- header 告知對話框目的 並且有關閉按鈕-->
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">新增設備至地圖</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form class="add-Map-Img" method="post" action="/addNewDevicPost" enctype="multipart/form-data">
+                                    <!-- body -->
+                                        <div class="modal-body">
+                                            <!-- 此為標單內容 -->
+                                                <div class="form-group">
+                                                    <label for="new_devic_map_name">選擇添加設備所在地圖名稱</label>                        
+                                                    <!-- 引用./js/editFileNameShowSelect.js檔案來讀取地圖名稱並顯示在下方option -->
+                                                    <select required class="form-control" id="new_devic_map_name" name="selectMapNameNewDevice">
+                                                    <!-- <option></option> -->
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label for="new_device_kind">選擇設備種類</label>                        
+                                                    <!-- 引用./js/editFileNameShowSelect.js檔案來讀取地圖名稱並顯示在下方option -->
+                                                    <select required class="form-control" id="new_device_kind" name="selectDeviceKind">
+                                                        <option value="monitor">monitor</option>
+                                                        <option value="lamp">lamp</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label for="new_device_name_input">請輸入設備名稱</label>
+                                                    <input type="text" name="new_device_name_input" class="form-control" id="new_device_name_input" placeholder="設備名稱" required/>
+                                                </div>    
+                                        </div>
+                                        <!-- footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                            <button type="submit" class="btn btn-primary">確定</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     <!-- ================================================================================= -->
 
                     <button class="btn mr-3 " type="button"  id="refresh-btn">
