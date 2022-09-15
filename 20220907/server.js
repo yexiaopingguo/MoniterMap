@@ -73,6 +73,7 @@ app.post('/addFilePost', upload.array('addMapImgFile'), (req, res) => {//在執�
     fs.writeFileSync('public/maps/maplist.json', jsonarr)//寫入本地json檔案
     return res.redirect('back')//刷新頁面
 });
+
 //設定router(對應更新icon之form)
 app.post('/iconform', (req, res) => {
 
@@ -299,5 +300,44 @@ app.post('/addNewDevicPost', (req, res) => {
         console.log(e + " happen in /addNewDevicPost ")
     }
     return res.redirect('back')//刷新頁面 
+})
+
+app.post('/editOldDevicPost', (req,res)=>{
+    console.log('/editOldDevicPost work')
+    try{
+        //取得表單資料
+        let newName = req.body.edit_device_name_input;
+        let newIP = req.body.edit_device_ip_input;
+        //2022/09/16 BUG 明天再說
+        //由動態新增的資料來取得目標資訊
+        // let tarMap = document.getElementById('edit_device_map_modal').innerText;
+        // let tarName = req.body.edit_device_name_modal;
+        // let tarKind = req.body.edit_device_kind_modal;
+        console.log(newName)
+        // for(let j = 0 ; j < jsonData[tarMap]['icons'].length ; j++){
+        //     if(jsonData[tarMap]['icons'][j].name == newName){
+        //         return res.status(204)
+        //         //名稱不能存在或與舊的相同
+        //     }
+        // }
+
+        // for(let i = 0 ; i < jsonData[tarMap]['icons'].length ; i++){
+        //     if(jsonData[tarMap]['icons'][i].name == tarName && jsonData[tarMap]['icons'][i].class == tarKind){
+        //         //有資料就蓋過去
+        //         if(newName != undefined){
+        //             jsonData[tarMap]['icons'][i].name = newName;
+        //         }
+        //         //有資料就蓋過去
+        //         if(newIP != undefined){
+        //             jsonData[tarMap]['icons'][i].url= newIP;
+        //         }
+        //     }
+        // }
+        // var jsonarr = JSON.stringify(jsonData)
+        // fs.writeFileSync('public/maps/maplist.json', jsonarr)
+
+    }catch(e){
+        console.log(e + "happen in /editOldDevicPost")
+    }
 })
 

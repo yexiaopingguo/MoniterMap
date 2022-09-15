@@ -326,8 +326,41 @@ function AddRmenuEvent(icon){
         ClearIconList()
         ShowClassList()
     };
-    edit_btn.onclick = function(){
 
+    //在設備上用滑鼠右鍵可以開啟有這個選項的manu 選擇編輯可觸發
+    edit_btn.onclick = function(){
+        //找到編輯設備的modal 顯示設備基本資料的區域(div)
+        let showThisDevicDataDiv = document.getElementById('showThisDevicDataDiv');
+        //資料先清掉不然會有上次紀錄
+        showThisDevicDataDiv.innerHTML = "";
+        //取得當前地圖名稱 變數cur_map全域
+        let map = document.createElement('lable');
+        //取得當前設備種類 變數 icon.classList[1] ps: 因為這個物件只有class看得出設備種類(覺得容易出事)
+        //icon.classList[1] 位置請參照 function CreateIcon(icon,x,y,iconcounts,devicename,url)
+        //element.className=`element ${icon}`; //設定class為'element (icon名稱)'
+        let kind = document.createElement('lable');
+        //取得當前設備名稱 利用傳入參數的id獲得value icon.id
+        let name = document.createElement('lable');
+        //取得當前設備URL(IP)
+        let ip = document.createElement('lable');
+
+        map.innerHTML =     "目標設備所在地圖名稱 : " + cur_map + "<br/>";
+        map.setAttribute("id","edit_device_map_modal");
+        kind.innerHTML =    "目標設備種類 : " + icon.classList[1] + "<br/>" ;
+        kind.setAttribute("id","edit_device_kind_modal");      
+        name.innerHTML =    "目標設備名稱 : " + icon.id + "<br/>" ;
+        name.setAttribute("id","edit_device_name_modal");
+
+        for(let i = 0 ; i < jsonData[cur_map]['icons'].length ; i++){
+            if(jsonData[cur_map]['icons'][i].name == icon.id){
+                ip.innerHTML = "目標設備IP : " + jsonData[cur_map]['icons'][i].url;
+                ip.setAttribute("id","edit_device_ip_modal");
+            }
+        }
+        showThisDevicDataDiv.appendChild(map);
+        showThisDevicDataDiv.appendChild(kind);
+        showThisDevicDataDiv.appendChild(name);
+        showThisDevicDataDiv.appendChild(ip);
     }
 }
 
@@ -719,12 +752,23 @@ function MapnameOverlap(){
 
 function deviceNameOverlap(){
     let map = document.getElementById('addNewDevice_MapName').value;
-    let kind = document.getElementById('new_device_kind').value;
+    // let kind = document.getElementById('new_device_kind').value;
     let name = document.getElementById('new_device_name_input').value;
  
     for(let i = 0 ; i < jsonData[map]['icons'].length ; i++){
         if( jsonData[map]['icons'][i].name == name){
-            alert('在該區域新的設備名稱不能與舊的重複')
+            alert('在該區域新的設備名稱不能與該區域既有的設備名稱重複')
+        }
+    }
+}
+
+function editDeviceNameOverlap(){
+    let map = document.getElementById('edit_device_map_input').value;
+    let name = document.getElementById('edit_device_name_input').value;
+
+    for(let i = 0 ; i < jsonData[map]['icons'].length ; i++){
+        if( jsonData[map]['icons'][i].name == name){
+            alert('在該區域新的設備名稱不能與該區域既有的設備名稱重複')
         }
     }
 }

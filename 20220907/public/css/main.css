@@ -192,6 +192,9 @@ display:none
 .deletebtn:hover{
     background-color:red;
 }
+.editbtn:hover{
+    background-color:gray;
+}
 /*Icon清單之清單內容*/
 .iconlabel{
     padding-left: 40px;

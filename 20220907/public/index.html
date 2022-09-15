@@ -316,7 +316,7 @@
     <div class="rmenu">
         <ul style="list-style:none;margin: auto;padding:0">
             <li class="movebtn">&nbsp&nbsp移動&nbsp&nbsp</li>
-            <li class="editbtn">&nbsp&nbsp編輯&nbsp&nbsp</li>
+            <li class="editbtn" data-toggle="modal" data-target="#editDeviceModal">&nbsp&nbsp編輯&nbsp&nbsp</li>
             <li class="deletebtn">&nbsp&nbsp刪除&nbsp&nbsp</li>
         </ul>
     </div>
@@ -394,7 +394,44 @@
             </div>
         </div>
     </div>
+
 <!--###############################################################################-->
+<!--modal必要 開啟對話視窗進行檔案新增-->
+<div class="modal fade" id="editDeviceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <!--modal必要 對話框 -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <!--modal必要 內容區塊 在此區寫出想要顯示的對話視窗-->
+        <div class="modal-content" >
+            <!-- header 告知對話框目的 並且有關閉按鈕-->
+            <div class="modal-header">
+                <h5 class="modal-title" >更改設備資料</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form  method="post" action="/editOldDevicPost" onsubmit="editDeviceNameOverlap()" >
+            <!-- body -->
+                <div class="modal-body">
+                    <!-- 此為標單內容 -->
+                        <div class="form-group" style="border:4px orange solid;" id="showThisDevicDataDiv">
+                            <!-- <label> 這裡會放所選設備的基本資料 -->
+                        </div>    
+                        <div class="form-group">
+                            <label for="edit_device_name_input">請輸入設備名稱</label>
+                            <input type="text" name="edit_device_name_input" class="form-control" id="edit_device_name_input" placeholder="新的設備名稱">
+                            <label for="edit_device_ip_input">請輸入設備IP</label>
+                            <input type="text" name="edit_device_ip_input" class="form-control" id="edit_device_ip_input" placeholder="新的設備ip">
+                        </div>               
+                </div>
+                <!-- footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">確定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!--載入自訂js-->
 <script src="js/jsmpeg.min.js"></script>
 <script src="map.js"></script>
