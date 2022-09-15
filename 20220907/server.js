@@ -288,7 +288,7 @@ app.post('/addNewDevicPost', (req, res) => {
                         "x": "",
                         "y": "",
                         "name": name,
-                        "url": ""}
+                        "url": ip}
 
         jsonData[map]['icons'].push(device)
         // console.log(jsonData[map]['icons'])
