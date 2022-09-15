@@ -20,7 +20,7 @@
 
 </head>
 <body>
-    
+ 
 <!--###############################################################################-->
     <!--此區域為最頂端(header)-->
     <div class="row header merge-padding-no col-12" >
@@ -247,7 +247,7 @@
                                         <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form  method="post" action="/addNewDevicPost" enctype="multipart/form-data">
+                                    <form  method="post" action="/addNewDevicPost" onsubmit="deviceNameOverlap()" >
                                     <!-- body -->
                                         <div class="modal-body">
                                             <!-- 此為標單內容 -->

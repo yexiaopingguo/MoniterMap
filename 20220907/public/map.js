@@ -717,6 +717,18 @@ function MapnameOverlap(){
     }
 }
 
+function deviceNameOverlap(){
+    let map = document.getElementById('addNewDevice_MapName').value;
+    let kind = document.getElementById('new_device_kind').value;
+    let name = document.getElementById('new_device_name_input').value;
+ 
+    for(let i = 0 ; i < jsonData[map]['icons'].length ; i++){
+        if( jsonData[map]['icons'][i].name == name){
+            alert('在該區域新的設備名稱不能與舊的重複')
+        }
+    }
+}
+
 function MapExist(){
     let inputmapname=document.getElementById('map-Name').value
     if(jsonData[inputmapname]!=undefined){

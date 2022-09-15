@@ -267,14 +267,36 @@ app.post('/addItemLinkPost', (req, res) => {
 //主頁面表單 新增設備資料 
 app.post('/addNewDevicPost', (req, res) => {
     try{
-        //地圖名稱 selectMapNameNewDevice 預期要能夠抓到
-        let mapGG = req.body.selectNewDeviceMapName;
-        var a = req.body.selectDeviceKind;
-        console.log('/addNewDevicPost')
-        console.log(mapGG)
-        console.log(a)
+        
+        let map = req.body.selectNewDeviceMapName;
+        //地圖名稱
+        let kind = req.body.selectDeviceKind;
+        //設備種類
+        let name = req.body.new_device_name_input;
+        //名稱
+
+        //檢查設備名稱重複
+        for(let i = 0 ; i < jsonData[map]['icons'].length ; i++){
+            if(jsonData[map]['icons'][i].name == name){
+                console.log(name + " has been existed in file")               
+                return res.status(204)                               
+            }
+        }
+
+        //設備資料寫入
+        let device = { "class" : kind , 
+                        "x": "",
+                        "y": "",
+                        "name": name,
+                        "url": ""}
+
+        jsonData[map]['icons'].push(device)
+        // console.log(jsonData[map]['icons'])
+        var jsonarr = JSON.stringify(jsonData)
+        fs.writeFileSync('public/maps/maplist.json', jsonarr)
+
     }catch(e){
- 
+        console.log(e + " happen in /addNewDevicPost ")
     }
     return res.redirect('back')//刷新頁面 
 })
