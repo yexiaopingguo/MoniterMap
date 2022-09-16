@@ -334,21 +334,26 @@ function AddRmenuEvent(icon){
         //資料先清掉不然會有上次紀錄
         showThisDevicDataDiv.innerHTML = "";
         //取得當前地圖名稱 變數cur_map全域
-        let map = document.createElement('lable');
+        let map = document.createElement('div');
         //取得當前設備種類 變數 icon.classList[1] ps: 因為這個物件只有class看得出設備種類(覺得容易出事)
         //icon.classList[1] 位置請參照 function CreateIcon(icon,x,y,iconcounts,devicename,url)
         //element.className=`element ${icon}`; //設定class為'element (icon名稱)'
-        let kind = document.createElement('lable');
+        let kind = document.createElement('div');
         //取得當前設備名稱 利用傳入參數的id獲得value icon.id
-        let name = document.createElement('lable');
+        let name = document.createElement('div');
         //取得當前設備URL(IP)
-        let ip = document.createElement('lable');
+        let ip = document.createElement('div');
 
-        map.innerHTML =     "目標設備所在地圖名稱 : " + cur_map + "<br/>";
+        let formPost = document.getElementById('editOldDevicForm');
+        let postData = "/editOldDevicPost?map="+ cur_map +"&deviceName=" + icon.id +"&deviceKind=" + icon.classList[1]
+        formPost.setAttribute("action",postData)
+        //設定req.query資料
+
+        map.innerHTML =     "目標設備所在地圖名稱 : " + cur_map;
         map.setAttribute("id","edit_device_map_modal");
-        kind.innerHTML =    "目標設備種類 : " + icon.classList[1] + "<br/>" ;
+        kind.innerHTML =    "目標設備種類 : " + icon.classList[1] ;
         kind.setAttribute("id","edit_device_kind_modal");      
-        name.innerHTML =    "目標設備名稱 : " + icon.id + "<br/>" ;
+        name.innerHTML =    "目標設備名稱 : " + icon.id ;
         name.setAttribute("id","edit_device_name_modal");
 
         for(let i = 0 ; i < jsonData[cur_map]['icons'].length ; i++){
@@ -763,7 +768,7 @@ function deviceNameOverlap(){
 }
 
 function editDeviceNameOverlap(){
-    let map = document.getElementById('edit_device_map_input').value;
+    let map = cur_map;
     let name = document.getElementById('edit_device_name_input').value;
 
     for(let i = 0 ; i < jsonData[map]['icons'].length ; i++){

@@ -308,36 +308,40 @@ app.post('/editOldDevicPost', (req,res)=>{
         //取得表單資料
         let newName = req.body.edit_device_name_input;
         let newIP = req.body.edit_device_ip_input;
-        //2022/09/16 BUG 明天再說
+        //2022/09/16 BUG 明天再說 
+        //(label 不能用req.body 所以用 query action資料透過 edit_btn.onclick建立 )
         //由動態新增的資料來取得目標資訊
-        // let tarMap = document.getElementById('edit_device_map_modal').innerText;
-        // let tarName = req.body.edit_device_name_modal;
-        // let tarKind = req.body.edit_device_kind_modal;
-        console.log(newName)
-        // for(let j = 0 ; j < jsonData[tarMap]['icons'].length ; j++){
-        //     if(jsonData[tarMap]['icons'][j].name == newName){
-        //         return res.status(204)
-        //         //名稱不能存在或與舊的相同
-        //     }
-        // }
+        let tarMap = req.query.map;
+        let tarName = req.query.deviceName;
+        let tarKind = req.query.deviceKind;
 
-        // for(let i = 0 ; i < jsonData[tarMap]['icons'].length ; i++){
-        //     if(jsonData[tarMap]['icons'][i].name == tarName && jsonData[tarMap]['icons'][i].class == tarKind){
-        //         //有資料就蓋過去
-        //         if(newName != undefined){
-        //             jsonData[tarMap]['icons'][i].name = newName;
-        //         }
-        //         //有資料就蓋過去
-        //         if(newIP != undefined){
-        //             jsonData[tarMap]['icons'][i].url= newIP;
-        //         }
-        //     }
-        // }
-        // var jsonarr = JSON.stringify(jsonData)
-        // fs.writeFileSync('public/maps/maplist.json', jsonarr)
+        for(let j = 0 ; j < jsonData[tarMap]['icons'].length ; j++){
+            if(jsonData[tarMap]['icons'][j].name == newName){
+                console.log("名稱不能存在或與舊的相同")  
+                res.status(204)             
+                return res.end()  
+                //名稱不能存在或與舊的相同
+            }
+        }
+
+        for(let i = 0 ; i < jsonData[tarMap]['icons'].length ; i++){
+            if(jsonData[tarMap]['icons'][i].name == tarName && jsonData[tarMap]['icons'][i].class == tarKind){
+                //有資料就蓋過去
+                if(newName != undefined){
+                    jsonData[tarMap]['icons'][i].name = newName;
+                }
+                //有資料就蓋過去
+                if(newIP != undefined){
+                    jsonData[tarMap]['icons'][i].url= newIP;
+                }
+            }
+        }
+        var jsonarr = JSON.stringify(jsonData)
+        fs.writeFileSync('public/maps/maplist.json', jsonarr)
 
     }catch(e){
         console.log(e + "happen in /editOldDevicPost")
     }
+    return res.redirect('back')//刷新頁面
 })
 
