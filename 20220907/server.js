@@ -71,7 +71,7 @@ app.post('/addFilePost', upload.array('addMapImgFile'), (req, res) => {//在執�
     var jsonarr = JSON.stringify(jsonData);//轉成json格式
     //console.log(jsonarr)
     fs.writeFileSync('public/maps/maplist.json', jsonarr)//寫入本地json檔案
-    return res.redirect('back')//刷新頁面
+    return res.redirect('http://localhost:3000')//刷新頁面
 });
 
 //設定router(對應更新icon之form)
@@ -207,11 +207,11 @@ app.post("/editFilePost", (req, res) => {
 
     } catch (err) {
         console.log(err);
-        return res.redirect('back')//刷新頁面 
+        return res.redirect('http://localhost:3000')//刷新頁面 
     }
 
     console.log("Rename Successful!");
-    return res.redirect('back')//刷新頁面  
+    return res.redirect('http://localhost:3000')//刷新頁面  
 })
 //刪除地圖
 app.get('/DeleteMap', (req, res) => {
@@ -261,7 +261,7 @@ app.post('/addItemLinkPost', (req, res) => {
         console.log(e + "happen in '/addItemLinkPost'");
          
     }
-    return res.redirect('back')//刷新頁面 
+    return res.redirect('http://localhost:3000')//刷新頁面 
 })
 
 
@@ -275,13 +275,18 @@ app.post('/addNewDevicPost', (req, res) => {
         //設備種類
         let name = req.body.new_device_name_input;
         //名稱
-
+        let ip=req.body.new_device_ip_input
         //檢查設備名稱重複
-        for(let i = 0 ; i < jsonData[map]['icons'].length ; i++){
-            if(jsonData[map]['icons'][i].name == name){
-                console.log(name + " has been existed in file")               
-                return res.status(204)                               
+        if(jsonData[map]['icons']!=undefined){
+            for(let i = 0 ; i < jsonData[map]['icons'].length ; i++){
+                if(jsonData[map]['icons'][i].name == name){
+                    console.log(name + " has been existed in file")               
+                    return res.status(204)                               
+                }
             }
+        }
+        else{
+            jsonData[map]['icons']=[]
         }
 
         //設備資料寫入
@@ -299,11 +304,12 @@ app.post('/addNewDevicPost', (req, res) => {
     }catch(e){
         console.log(e + " happen in /addNewDevicPost ")
     }
-    return res.redirect('back')//刷新頁面 
+    return res.redirect('http://localhost:3000')//刷新頁面 
 })
 
 app.post('/editOldDevicPost', (req,res)=>{
     console.log('/editOldDevicPost work')
+    var tarMap
     try{
         //取得表單資料
         let newName = req.body.edit_device_name_input;
@@ -311,7 +317,7 @@ app.post('/editOldDevicPost', (req,res)=>{
         //2022/09/16 BUG 明天再說 
         //(label 不能用req.body 所以用 query action資料透過 edit_btn.onclick建立 )
         //由動態新增的資料來取得目標資訊
-        let tarMap = req.query.map;
+        tarMap = req.query.map;
         let tarName = req.query.deviceName;
         let tarKind = req.query.deviceKind;
 
@@ -342,6 +348,8 @@ app.post('/editOldDevicPost', (req,res)=>{
     }catch(e){
         console.log(e + "happen in /editOldDevicPost")
     }
-    return res.redirect('back')//刷新頁面
+    return res.redirect(`http://localhost:3000?target=${tarMap}`)
+    //刷新頁面並指定當前地圖為目標地圖(讓使用者能接續操作)
 })
+
 

@@ -5,15 +5,12 @@ var cur_map=''; //代表當前畫面上的地圖名稱
 var tab_len = 0; 
 
 var backimg=$('.backgroundimg')[0] //html中的背景圖片img
-var show=$('.show')[0] //html中的顯示當前地圖名稱label
+var show=$('.showmaplabel')[0] //html中的顯示當前地圖名稱label
 
 var icondict={"monitor":"../icon/imac.png","lamp":"../icon/lamp-post.png"}//各icon對應的檔案路徑
        
 var leftdiv=$('.leftcontainer')[0] //左側欄div
 var btntitle=$('.buttontitle')[0]  //說明icon按鈕之標題(label)
-var monitorbtn=$('.monitorButton')[0]; //monitor icon之按鈕
-var lampbtn=$('.lampButton')[0];       //lamp 按鈕
-var cancel=$('.cancel')[0];            //取消按鈕
 var container = document.getElementById("container"); //背景圖和icon的父層div
 var rmenu=$('.rmenu')[0];              //右鍵選單div
 
@@ -47,14 +44,13 @@ var restartserverbtn=document.getElementById("restartserver-btn")//重新啟動s
 var devicedict={} //存放串流URL以及其對應的WebSocket port之dictionary
 var player //串流撥放器
 
-//展開與摺疊縮放設備列表功能所使用的變數
-
 var iconlistshowing=false//是否顯示設備列表
 var lastclick=''//紀錄按下的地圖名稱
 
 var ipstatusdict={}//存放ip以及其最新狀態的dict
-
 var serverdead=false//紀錄server是否斷線
+
+var waitingIconArea=$('#WatingArea')[0]//待定位設備顯示區域
 
 //取得本地json檔資料
 
@@ -91,20 +87,19 @@ fetch('device_and_port.json').
 
 function main() {
 
-    //每隔1秒檢查一次server狀態
+    
+    //每隔2秒檢查一次server狀態和更新設備狀態
     setInterval(() => {
 
+        ShowDeivceStatus()//更新設備狀態
         //如果server沒斷線，則執行檢查
         if(!serverdead){
             checkserver('http://localhost:3000')
         }
-    }, 1000);
+    }, 2000);
 
     Addmaps();//使用讀取到的資料來創建map
-    
-    //設置icon按鈕之事件
-    monitorbtn.addEventListener("click", function(e){SelectIcon("monitor");});
-    lampbtn.addEventListener("click", function(e){SelectIcon("lamp");});
+    DirectToMap()//開啟網址get參數所選定的地圖
 
     container.oncontextmenu=function(e){return false;};//在container範圍內，取消瀏覽器預設之右鍵選單
     document.onclick=()=>{
@@ -146,7 +141,7 @@ function main() {
 function Addmaps(){ //功能為:使用讀取到的json檔案資料創建地圖
     //console.log(jsonData)
     for(let mapname in jsonData){ //迭代jsonData所有key(key代表地圖名稱)
-
+        
         //創建map之下的icon清單之div
         let iconlistdiv=document.createElement('div')
         //創建包含map和delete的div
@@ -163,7 +158,7 @@ function Addmaps(){ //功能為:使用讀取到的json檔案資料創建地圖
         //設定map屬性值與click事件
         map.className="btn btn-link button_slide slide_left btn_wide_standard active" //使用bootstrap的btn模板
         map.textContent= mapname //button的顯示名稱(innerText)
-        map.id=mapname //設定button id
+        map.id=mapname  //設定button id
         map.addEventListener('click',(e)=>{ //將button綁定click事件
 
             //判斷當前為展開or摺疊狀態
@@ -195,7 +190,7 @@ function Addmaps(){ //功能為:使用讀取到的json檔案資料創建地圖
             
 
             ShowDeivceStatus()
-
+            ShowWaitingDevice()
             screen.style.display='none';
             
         })
@@ -236,6 +231,80 @@ function Addmaps(){ //功能為:使用讀取到的json檔案資料創建地圖
     }
     
 }
+function DirectToMap(){//開啟網址get參數所選定的地圖
+
+    //讀取網址url，取出target參數
+    let getUrlString = location.href;
+    let url = new URL(getUrlString);
+    let targetmap=url.searchParams.get('target'); // 取得 target 參數
+    //如果target參數不為無，則觸發指定地圖按鈕的click事件
+    if(targetmap!=undefined){
+        console.log(targetmap)
+        document.getElementById(targetmap).click()
+    }
+    
+
+}
+function ShowWaitingDevice(){  //顯示當前地圖的未定位設備清單
+    //清空待定位設備區
+    waitingIconArea.innerHTML=''
+    //如果存在當前地圖
+    if(cur_map!=''){
+        //取得jsonData內當前地圖的icon清單
+        let iconlist=jsonData[cur_map].icons
+        //走訪清單內Icon
+        for(let i=0;i<iconlist.length;i++){
+
+            let icon=iconlist[i]
+            //如果icon的x欄位為空字串，則代表未定位
+            if(icon.x==''){
+
+                //創建未定位設備之label和功能選項
+                let waitingicondiv=document.createElement('div')
+                let iconlabel=document.createElement('label')
+                let putinBtn=document.createElement('img')
+
+                //水平排列區塊元素並靠右對齊
+                waitingicondiv.style.display='flex'
+                waitingicondiv.style.justifyContent='flex-end';
+                waitingicondiv.id=icon.name+'_waitingdiv'
+
+                //指定label樣式及顯示內容
+                iconlabel.className='icon_neme_label'
+                iconlabel.innerHTML=icon.name
+                iconlabel.id=icon.name+'_label'
+
+                //設定功能按鈕之樣式、來源圖片
+                putinBtn.className='btn btn-outline-secondary'
+                putinBtn.src='../icon/plus.png'
+                putinBtn.style.height='34px'
+                putinBtn.style.padding='5px'
+                //設定click事件
+                putinBtn.onclick=()=>{
+
+                    //更換顏色提醒使用者當前移動的Icon
+                    $(`#${icon.name}_label`)[0].style.backgroundColor='blue'
+                    //創建icon
+                    CreateIcon(icon.class,icon.x,icon.y,iconcounts,icon.name,icon.url)
+                    //將該icon設為不可見
+                    let targeticon=$(`#${icon.name}`)[0]
+                    targeticon.style.display='none'
+                    //觸發移動icon事件
+                    MoveElement(targeticon)//在MoveElement有為未定位設備新增動作
+                }
+
+                //將創建完的物件加入待定位區域
+                waitingicondiv.appendChild(iconlabel)
+                waitingicondiv.appendChild(putinBtn)
+                waitingIconArea.appendChild(waitingicondiv)
+            }
+        }
+
+    }
+        
+    
+    
+}
 //根據jsonData內容中Icon資訊創建Icon
 function AddIcons(){
    
@@ -252,14 +321,17 @@ function AddIcons(){
     let icons=mapdata.icons
 
     for(let i=0;i<icons.length;i++){
-        CreateIcon(icons[i].class,icons[i].x,icons[i].y,iconcounts,icons[i].name,icons[i].url)//根據icons各欄位資料創建Icon
+        //如果當前icon之x為空字串，代表未定位，則不創建
+        if(icons[i].x!=''){
+            CreateIcon(icons[i].class,icons[i].x,icons[i].y,iconcounts,icons[i].name,icons[i].url)//根據icons各欄位資料創建Icon
+        }
         iconcounts+=1 //創建後iconcounts+1
     }
 }
-function CreateIcon(icon,x,y,iconcounts,devicename,url){
-    let iconsrc=icondict[icon] //根據icon名稱取得img的src
+function CreateIcon(iconclass,x,y,iconcounts,devicename,url){
+    let iconsrc=icondict[iconclass] //根據icon名稱取得img的src
     var element=document.createElement("img");
-    element.className=`element ${icon}`; //設定class為'element (icon名稱)'
+    element.className=`element ${iconclass}`; //設定class為'element (icon名稱)'
     element.id=devicename; //設定id
     element.src=iconsrc; //指定src
     element.alt=url;
@@ -301,6 +373,7 @@ function CreateIcon(icon,x,y,iconcounts,devicename,url){
 
     element.style.zIndex=iconcounts; //z-index為圖層，數字越大越高層，設定為iconcounts
     container.appendChild(element);  //加入element於container中
+    
 
 } 
 function showrightmenu(){ //顯示移動刪除選單
@@ -375,8 +448,7 @@ function MoveElement(icon){ //點擊'移動'之function
     container.style.cursor=
     `url(${icon.currentSrc}),pointer`;
 
-    //將當前icon套上灰色濾鏡
-    icon.style.filter='grayscale(100%)';
+    
 
     //設定點擊container將觸發的事件
     container.onmousedown=function(e){   
@@ -384,7 +456,7 @@ function MoveElement(icon){ //點擊'移動'之function
         icon.style.marginTop=(e.offsetY+15)+'px';
         icon.style.marginLeft=e.offsetX+'px';
 
-        icon.style.filter=null;//移除濾鏡
+        
         container.onmousedown=null; //移除事件
         container.style.cursor='default'; //將滑鼠變為預設
 
@@ -392,6 +464,12 @@ function MoveElement(icon){ //點擊'移動'之function
         UpdateIconList()
         ClearIconList()
         ShowClassList()
+
+        //將未定位的設備定位完成後的動作
+        if(icon.style.display=='none'){//判斷是否原先是未定位設備
+            icon.style.display='block'//顯示設備
+            $(`#${icon.id}_waitingdiv`)[0].remove()//移除原先在未定位區域的label,btn
+        }
     }
         
 }
@@ -450,85 +528,6 @@ function ScreenZoomOut(){
     closescreen.style.left="302px"
 }
 
-function SelectIcon(icon)//icon button被按下時觸發 icon是按下的按鈕名稱
-{
-        iconsrc=icondict[icon];//根據icon名稱取得img的src
-
-        //顯示cancel按鈕並綁定事件
-        cancel.style.display='inline';
-        cancel.addEventListener("click", Cancel);
-
-        //將滑鼠改變為與icon一樣的圖示
-        container.style.cursor=
-    	`url(${iconsrc}),pointer`;
-
-        //設定container之點擊事件
-        container.onmousedown = function(e)
-        {SetIconbyMouse(e,icon);};
-
-}
-
-function Cancel()
-{
-    	cancel.style.display="none";
-        container.style.cursor="default";
-        container.onmousedown = null;
-}
-
-function SetIconbyMouse(e,icon)
-{
-        
-        var PosX = 0;
-        var PosY = 0;
-
-        if (!e) var e = window.event;
-        if (e.offsetX || e.offsetY)
-        {
-            PosX = e.offsetX;//offsetX可以取得e的x值,(0,0)在左上角
-            PosY = e.offsetY;//同理
-        }
-        //值的尾端加上px
-        PosX=PosX+"px"
-        PosY=(PosY+15)+"px"
-        console.log(PosX);
-        console.log(PosY);
-
-        //將表單位置設為滑鼠右鍵點擊icon時位置，並顯示
-        deviceInfoDiv.style.left = e.clientX + 'px';
-        deviceInfoDiv.style.top = e.clientY + 'px';
-        deviceInfoDiv.style.display = 'flex';
-        
-        deviceCancel.onclick=()=>{
-            deviceInfoDiv.style.display='none'
-        }
-        deviceReset.onclick=()=>{
-            devicename.value=''
-            url.value=''
-
-        }
-        //20220811 note:不需要使用form(在送出表單過程中不可送出另一表單，另一表單不會正常送出)
-        deviceSubmit.onclick=()=>{
-
-            deviceInfoDiv.style.display = 'none';
-            CreateIcon(icon,PosX,PosY,iconcounts,devicename.value,url.value)//創建Icon
-            console.log('after create')
-
-            //更新json檔與左側欄iconlist
-            ClearIconList()
-            UpdateIconList()
-            console.log('after update')
-            ShowClassList()
-
-            //創建並更新後完成執行Cancel
-            Cancel() 
-
-            iconcounts+=1//icon數+1  
-        }
-        
-}
-
-
-
 function ClearIconList(){ //清除所有顯示的iconlist
     let allicondiv=$('.div') //選取所有class含有'div'之物件
     //清空所有選取物件的innerHTML
@@ -569,8 +568,7 @@ function ShowIconList(){ //掃描當前所有icon，並顯示於iconlist
 }
 
 
-var iconShow = false;
-var tar_classTitle_id
+var ClassShowingDict = {};//紀錄每個Class(設備類別)之下的設備清單的顯示狀態
 //左方樹狀地圖的選單點擊後會先出現這個地圖的設備種類
 //where happen: 
 //event: when "map btn" OnClick
@@ -595,27 +593,22 @@ function ShowClassList(){
         let classTitle = document.createElement("button");
         classTitle.id = `classTitle_${cur_map}_${tar_class}`;
         classTitle.innerHTML=tar_class;
-        classTitle.className='button_slide slide_diagonal btn_wide_standard btn_wide_second'
+        classTitle.className='button_slide slide_diagonal btn_wide_standard btn_wide_second classbtn'
 
         let classTitle_inner_div = document.createElement("div");
         classTitle_inner_div.className = `classTitle_inner_div`;
         classTitle_inner_div.id = `${cur_map}_${tar_class}_inner_div`
         
+        ClassShowingDict[tar_class]=false//預設當前Class的設備清單顯示狀態為false
 
-        classTitle.addEventListener('click', (e) => {
+        classTitle.addEventListener('click', (e) => {//按下Class按鈕觸發
             
-            if(e.target.id == tar_classTitle_id){
-                iconShow = !iconShow
-            }else{
-                iconShow = true;
-            }
+            ClassShowingDict[tar_class]=!ClassShowingDict[tar_class]//將顯示狀態反轉
 
-            ClearClassIconList()           
-            if(iconShow){
+            ClearClassIconList(tar_class)  //先清除當前class之下的清單         
+            if(ClassShowingDict[tar_class]){//如果顯示狀態為true，則顯示清單
                 showClassIcons(tar_class);
             }
-
-            tar_classTitle_id = `classTitle_${cur_map}_${tar_class}`;
             
         })
 
@@ -629,14 +622,19 @@ function ShowClassList(){
     }
 
     target_map_div.appendChild(classTitle_div)
+
+    //觸發所有Class按鈕之click，達到顯示所有設備清單效果
+    let classbtns=$('.classbtn')
+    for(let i=0;i<classbtns.length;i++){
+
+        classbtns[i].click()
+    }
 }
 
-function ClearClassIconList(){ //清除所有顯示的iconlist
-    let allicondiv=$('.classTitle_inner_div') //選取所有class含有'div'之物件
-    //清空所有選取物件的innerHTML
-    for(let i=0;i<allicondiv.length;i++){
-        allicondiv[i].innerHTML=''
-    }
+function ClearClassIconList(tar_class){ //清除指定的iconlist
+    let classdiv=$(`#${cur_map}_${tar_class}_inner_div`)[0] //選取指定class之設備清單div
+    classdiv.innerHTML=''//清除內容
+        
 }
 
 function showClassIcons(tar_class){
@@ -646,7 +644,9 @@ function showClassIcons(tar_class){
     //get "icons" list which contain icon's information
 
     for(let i = 0 ; i < res_map.length ; i++){
-        if(tar_class == res_map[i].class){
+
+        //如果當前設備類別等於指定的類別，以及非未定位設備
+        if((tar_class == res_map[i].class) && (res_map[i].x!='')){
             //To descide what kind class it is and create element
             let icon_item = document.createElement('label');
             let br =document.createElement('br')
@@ -719,29 +719,38 @@ $(".custom-file-input").on("change", function() {
 function ShowDeivceStatus(){ 
     console.log()
     let icons=$('.element')
-    //$.getJSON('localhost/restart')
+    
+    let restartstatus=false
     for(let i=0;i<icons.length;i++){
-        let icon=icons[i]
-        let deviceurl=icon.alt
-        console.log(deviceurl)
+
+        let icon=icons[i]//取得設備物件
+        let deviceurl=icon.alt//取得設備的url
+        
+        
         if(devicedict[deviceurl]!=undefined){
+
+            //每個設備發一個request到server，server會回傳該設備的狀態
             $.getJSON(`/getStatus?url=${deviceurl}&cur_status=${ipstatusdict[deviceurl]}`,(data)=>{
-                console.log(data[0].status)
-                if(data[0].status){
-                    console.log('in')
-                    icon.style.filter='hue-rotate(90deg)';
-                    if(ipstatusdict[deviceurl]==false){
-                        $.getJSON('http://localhost/restart')
+                
+                if(data[0].status){//狀態為true
+                    icon.style.filter='hue-rotate(90deg)';//顏色轉換
+                    if(ipstatusdict[deviceurl]==false){//如果此設備上一個狀態為關閉
+                        if(!restartstatus){//避免二次重啟server
+                            restartstatus=true//要重啟server
+                            $.getJSON('http://localhost/restart')//發出重啟server請求
+                        }
+                        
                     }
-                    ipstatusdict[deviceurl]=true;
+                    ipstatusdict[deviceurl]=true;//記錄此設備狀態
                 }
-                else{
-                    icon.style.filter='hue-rotate(0deg)';
-                    ipstatusdict[deviceurl]=false;
+                else{//狀態為false
+                    icon.style.filter='hue-rotate(0deg)';//顏色轉回原始
+                    ipstatusdict[deviceurl]=false;//記錄此設備狀態
                 }
             })
         }
     }
+    
 }
 
 $(function () {

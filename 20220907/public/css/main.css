@@ -51,6 +51,22 @@ body {
     background-color: rgba(255, 182, 55, 0.85);
 }
 
+.showmaplabel{/*顯示當前地圖名稱之label*/
+    background-color: #7fbce9;
+    border-radius: 5px;
+    padding: 4px;
+    color: #625151;
+}
+
+.icon_neme_label{/*設備清單之設備名稱樣式*/
+    padding: 4px;
+    margin-top: 1px;
+    margin-left: 30px;
+    background-color: #6c757d;
+    border: solid #ffffff 1px;
+    color: #ffffff;
+    border-radius: 5px;
+}
 .search-item{
     padding: 10px;
 }

@@ -68,15 +68,14 @@
                 <button class="btn btn-sm btn-secondary" type="submit">Search</button>
             </form> -->
             <div class="leftcontainer">
-                <label>點擊圖片名稱即可更換圖片</label><br />
-                <label class="show"></label>
+                <label class="alert alert-primary" style="margin-top:10px">點擊圖片名稱即可更換圖片</label><br />
+                <label class="showmaplabel" ></label>
                 <br />
-                <label class="buttontitle">點擊按鈕即可新增特定圖標</label>
-                <div>
-                    <button class="monitorButton">monitor</button><br/>
-                    <button class="lampButton">Lamp</button><br/>
-                    <button class="cancel">cancel</button>
+                <label class="buttontitle alert alert-primary" style="margin-top:10px">待定位設備</label>
+                <div id="WatingArea">
                 </div>
+                
+               
                 
                 
                 
@@ -271,7 +270,7 @@
                                                     <input type="text" name="new_device_name_input" class="form-control" id="new_device_name_input" placeholder="設備名稱" required/>
                                                 </div>    
                                                 <div class="form-group">
-                                                    <label for="new_device_ip_input">請輸入設備ip(非必要)</label>
+                                                    <label for="new_device_ip_input">請輸入設備ip</label>
                                                     <input type="text" name="new_device_ip_input" class="form-control" id="new_device_ip_input" placeholder="設備ip"/>
                                                 </div> 
                                         </div>
