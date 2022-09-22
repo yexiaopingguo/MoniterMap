@@ -213,10 +213,12 @@ function Addmaps(){ //功能為:使用讀取到的json檔案資料創建地圖
 
                 //完成後觸發取消按鍵，關閉表單
                 $('#deletemap_cancel')[0].click()
+                window.location.reload()//刷新頁面
             }
 
             //開啟刪除確認表單(按下隱藏的呼叫表單按鈕)
             $('#deletemapbtn')[0].click()
+            
             
         })
         
@@ -342,7 +344,8 @@ function CreateIcon(iconclass,x,y,iconcounts,devicename,url){
 
     element.addEventListener('dblclick',(e)=>{
         var e=window.event;
-        console.log(devicedict[url])
+        console.log(url)
+        console.log(devicedict)
         //將選單位置設為滑鼠右鍵點擊icon時位置，並顯示
 
         mainscreen.remove()
@@ -725,31 +728,33 @@ function ShowDeivceStatus(){
 
         let icon=icons[i]//取得設備物件
         let deviceurl=icon.alt//取得設備的url
-        
-        
-        if(devicedict[deviceurl]!=undefined){
 
-            //每個設備發一個request到server，server會回傳該設備的狀態
-            $.getJSON(`/getStatus?url=${deviceurl}&cur_status=${ipstatusdict[deviceurl]}`,(data)=>{
-                
-                if(data[0].status){//狀態為true
-                    icon.style.filter='hue-rotate(90deg)';//顏色轉換
-                    if(ipstatusdict[deviceurl]==false){//如果此設備上一個狀態為關閉
-                        if(!restartstatus){//避免二次重啟server
-                            restartstatus=true//要重啟server
-                            $.getJSON('http://localhost/restart')//發出重啟server請求
-                        }
-                        
+        //每個設備發一個request到server，server會回傳該設備的狀態
+        //如果ip是新的 則server會傳回新的Wsport號
+        $.getJSON(`/getStatus?url=${deviceurl}&cur_status=${ipstatusdict[deviceurl]}`,(data)=>{
+            if(data[0].status){//狀態為true
+                icon.style.filter='hue-rotate(90deg)';//顏色轉換
+                if(ipstatusdict[deviceurl]==false){//如果此設備上一個狀態為關閉
+                    if(!restartstatus){//避免二次重啟server
+                        restartstatus=true//要重啟server
+                        $.getJSON('http://localhost/restart')//發出重啟server請求
                     }
-                    ipstatusdict[deviceurl]=true;//記錄此設備狀態
+                        
                 }
-                else{//狀態為false
-                    icon.style.filter='hue-rotate(0deg)';//顏色轉回原始
-                    ipstatusdict[deviceurl]=false;//記錄此設備狀態
-                }
-            })
-        }
-    }
+                ipstatusdict[deviceurl]=true;//記錄此設備狀態
+            }
+            else{//狀態為false
+                icon.style.filter='hue-rotate(0deg)';//顏色轉回原始
+                ipstatusdict[deviceurl]=false;//記錄此設備狀態
+            }
+            //console.log('newport',data[0].newport)
+            //傳回的newport不為0，代表有新的Wsport產生
+            if(data[0].newport!=0){
+                devicedict[deviceurl]=data[0].newport
+            }
+        })
+    }    
+    
     
 }
 

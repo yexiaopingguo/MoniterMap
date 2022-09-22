@@ -45,7 +45,7 @@ app.post('/addFilePost', upload.array('addMapImgFile'), (req, res) => {//在執�
     if (jsonData[req.body.newAddMapImgName] != undefined) {
         return res.sendStatus(204)
     }
-    //創建一個資料夾，名稱為client端輸入的地圖名稱
+    //創建一個資料夾，名稱為使用者輸入的地圖名稱
     console.log(req.body.newAddMapImgName)
     var foldername = `public/maps/${req.body.newAddMapImgName}`;
     fs.mkdir(path.join(__dirname, foldername), (err) => {
@@ -67,9 +67,9 @@ app.post('/addFilePost', upload.array('addMapImgFile'), (req, res) => {//在執�
 
     //jsonData是讀取到的json檔案
     jsonData[req.body.newAddMapImgName] = { 'mapname': fileoriname };//設定地圖名與對應的檔案
+    
     //key值是地圖名稱,value則是object形式，先指定mapname=檔案原始名稱
     var jsonarr = JSON.stringify(jsonData);//轉成json格式
-    //console.log(jsonarr)
     fs.writeFileSync('public/maps/maplist.json', jsonarr)//寫入本地json檔案
     return res.redirect('http://localhost:3000')//刷新頁面
 });
@@ -113,68 +113,74 @@ app.post('/iconform', (req, res) => {
 var Stream = require('node-rtsp-stream');
 const { json } = require('body-parser');
 var streamlist = {}
+var portcount=0//紀錄當前存在的port數量
+
+//根據原先的ip與port對照表生成stream物件
 for (let url in devicedict) {
+    console.log(`rtsp://admin:123456@${url}:554/stream0`)
     streamlist[url] = new Stream({
         name: 'socket',
-        streamUrl: url,
-        wsPort: devicedict[url],
+        streamUrl: `rtsp://admin:123456@${url}:554/stream0`,
+        wsPort: devicedict[url],//指定使用的Wsport通道
         ffmpegOptions: {
             '-stats': '',
             '-r': 20,
             '-s': '1920 1080'
         }
     })
+    portcount+=1//port數量+1
 }
 
-var portcount = 1
 app.get('/getStatus', (req, res) => {
 
     let url = req.query.url
     let cur_status = req.query.cur_status
     console.log(cur_status)
     let havestream = false
-    /*
-    //重新拉，推流
-    streamlist[url].wsServer.close();//先將該url對應的Stream物件中的wsServer關閉
-    streamlist[url]=new Stream({//在建立一樣的Stream物件
+    let newport=0
+    if(streamlist[url]==undefined){
+
+        //產生新的url對應的新port Number
+        portcount+=1
+        newport=5000+portcount//5000+當前port數量，即為新的port Number
+        devicedict[url]=newport
+        
+        //複寫ip與port對照表檔案
+        let jsonarr = JSON.stringify(devicedict);
+        fs.writeFileSync('./public/device_and_port.json', jsonarr)
+
+        //將新的url的stream指定給新的port Number
+        streamlist[url]=new Stream({
             name: 'socket',
-            streamUrl: url,
+            streamUrl: `rtsp://admin:123456@${url}:554/stream0`,
             wsPort: devicedict[url],
             ffmpegOptions:{
                 '-stats': '',
                 '-r': 20,
                 '-s': '1920 1080'
             }
-    })
-    //////
-    */
-    let ip = url.split('@')[1]
-    ip = ip.split(':')[0]
-    console.log(ip)
+        })
 
-    ping.sys.probe(ip, function (isAlive) {
-        var msg = isAlive ? 'host ' + ip + ' is alive' : 'host ' + ip + ' is dead';
+    }
+    
+    //ping指定的url
+    ping.sys.probe(url, function (isAlive) {
+        var msg = isAlive ? 'host ' + url + ' is alive' : 'host ' + url + ' is dead';
         console.log(msg);
+        //如果該url有回應，將havestream設為true
         if (isAlive) {
             havestream = true
         }
 
     });
-    /*
-    console.log(streamlist[url].wsServer)
-    
-    if(streamlist[url].stream.exitCode==null){
-        //console.log('streaming in')
-        havestream=true
-    }*/
     setTimeout(() => {
         res.writeHead(200, {
             'Content-Type': 'application/json'
         })
         console.log('s')
-        let jsondata = [{ 'status': havestream }]
+        let jsondata = [{ 'status': havestream ,'newport':newport}]
         res.end(JSON.stringify(jsondata))
-    }, 500);
+    }, 200);
 
 })
 
@@ -220,8 +226,12 @@ app.get('/DeleteMap', (req, res) => {
     //寫入json檔案
     var jsonarr = JSON.stringify(jsonData)
     fs.writeFileSync('public/maps/maplist.json', jsonarr)
+    //刪除該地圖資料夾
+    fs.rmdir(`public/maps/${TargetMap}` ,{ recursive: true },()=>{
+        console.log('delete'+TargetMap+'success')
+    })
     //回傳204狀態碼
-    res.sendStatus(204)
+    return res.sendStatus(204)
 })
 
 //新增設備表單ip

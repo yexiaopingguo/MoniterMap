@@ -18,6 +18,10 @@
     <link rel="stylesheet" type="text/css" href="css/btnStyle.css" >
     <!--btn resource from https://codepen.io/RazorXio/pen/gMaoOW -->
 
+    <!--預先載入圖片檔案，解決滑鼠變成圖片外觀時失敗的問題-->
+    <link rel="preload" href="icon/imac.png" as="image" />
+    <link rel="preload" href="icon/lamp-post.png" as="image" />
+
 </head>
 <body>
  
@@ -173,63 +177,7 @@
                             </div>
                         </div>
                         <!-- ================================================================================= -->
-                    <button class="btn mr-3" data-toggle="modal"  data-target="#linkDeviceModal" type="button" id="url-link-device-btn">
-                        <img src="/icon/connection.png" data-toggle="tooltip" data-placement="top" title="設備連結" class="img-icon">
-                    </button>
-                    <!--modal必要 開啟對話視窗進行檔案名稱更改-->
-                    <div class="modal fade" id="linkDeviceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <!--modal必要 對話框 -->
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <!--modal必要 內容區塊 在此區寫出想要顯示的對話視窗-->
-                            <div class="modal-content" >
-                                <!-- header 告知對話框目的 並且有關閉按鈕-->
-                                <div class="modal-header">
-                                    <h5 class="modal-title">請選擇要新增連結的設備名稱</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <form class="add-item-link" method="post" action="/addItemLinkPost">
-                                <!-- body -->
-                                    <div class="modal-body">
-                                        <!-- 此為標單內容 -->
-                                            <div class="form-group">
-                                                <label for="map-Name">地圖名稱</label>                        
-                                                <!-- 引用./js/editFileNameShowSelect.js檔案來讀取地圖名稱並顯示在下方option -->
-                                                <select required class="form-control" id="devic_map_name" name="selectMapName" onchange="deviceClassShowOption()">
-                                                    <!-- <option></option> -->
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="map-Name">設備類別</label>                        
-                                                <!-- 引用./js/editFileNameShowSelect.js檔案來讀取地圖名稱並顯示在下方option -->
-                                                <select required class="form-control" id="devic_class_name" name="selectItemClass" onchange="deviceNameShowOption()">
-                                                    <!-- <option></option> -->
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="map-Name">設備名稱</label>                        
-                                                <!-- 引用./js/editFileNameShowSelect.js檔案來讀取地圖名稱並顯示在下方option -->
-                                                <select required class="form-control" id="devic_item_name" name="selectItemName">
-                                                    <!-- <option></option> -->
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label>輸入設備IP</label>
-                                                <div class="custom-file">
-                                                    <input class="form-control" id="add_ItemIp_Id" name="addItemIpName" type="text" placeholder="輸入設備IP" required/>
-                                                </div>
-                                            </div>    
-                                    </div>
-                                    <!-- footer -->
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                        <button type="submit" class="btn btn-primary" >確定</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                    <!--新增設備表單-->
                     <button class="btn mr-3" data-toggle="modal" data-target="#addDeviceModal" type="button" id="add-btn">
                         <img src="icon/add.png" data-toggle="tooltip" data-placement="top" title="新增設備" class="img-icon">
                     </button>
