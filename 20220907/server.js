@@ -343,11 +343,14 @@ app.post('/editOldDevicPost', (req,res)=>{
         for(let i = 0 ; i < jsonData[tarMap]['icons'].length ; i++){
             if(jsonData[tarMap]['icons'][i].name == tarName && jsonData[tarMap]['icons'][i].class == tarKind){
                 //有資料就蓋過去
-                if(newName != undefined){
+                //undefine and null and empty can't check value NOTE QQ
+                if(newName.length > 0){
+                    console.log(newName + "HOHOHOHOHOHOHOHOHOHOHOHOHO")
                     jsonData[tarMap]['icons'][i].name = newName;
                 }
                 //有資料就蓋過去
-                if(newIP != undefined){
+                //undefine and null and empty can't check value NOTE QQ
+                if(newIP.length > 0){
                     jsonData[tarMap]['icons'][i].url= newIP;
                 }
             }
