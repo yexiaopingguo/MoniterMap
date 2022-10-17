@@ -1,0 +1,24 @@
+[
+	{
+		"name": "sa",
+		"email": "tony@stark.com",
+		"password": "123456",
+		"permission": {
+			"map_edit": 1,
+			"device_edit": 1,
+			"device_move": 1,
+			"view_page": 1
+		}
+	},
+	{
+		"name": "JINRONG",
+		"email": "1056527538@qq.com",
+		"password": "123",
+		"permission": {
+			"map_edit": 0,
+			"device_edit": 0,
+			"device_move": 0,
+			"view_page": 1
+		}
+	}
+]
