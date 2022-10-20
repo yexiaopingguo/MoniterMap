@@ -204,7 +204,7 @@ display:none
 
 /*選單之'移動'之滑鼠進入事件*/
 .movebtn:hover{
-    background: gray;
+    background: rgb(168, 203, 248);
 }
 /*選單之'刪除'之滑鼠進入事件*/
 .deletebtn:hover{

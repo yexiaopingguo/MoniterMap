@@ -52,9 +52,16 @@ var serverdead=false//紀錄server是否斷線
 
 var waitingIconArea=$('#WatingArea')[0]//待定位設備顯示區域
 
+var addmapbtn=$('#AddMapBtn')[0]//新增地圖按鈕
+var editmapbtn=$('#EditMapBtn')[0]//編輯地圖按鈕
+var adddevicebtn=$('#AddDeviceBtn')[0]//新增設備按鈕
+
 var user_name = document.getElementById("user_name")    // 頁面上用戶的姓名
 var user_email = document.getElementById("user_email")    // 頁面上用戶的郵箱
 var user_permission = document.getElementById("user_permission")     // 頁面上用戶的權限
+
+var permissionbtn=$('#permission_manage')[0]//權限管理按鈕
+
 
 // ----------------------------------------------------------------------------------------
 // 登入
@@ -144,8 +151,16 @@ fetch('device_and_port.json').
     })
 
 function main() {
-
     
+    //檢查權限，若不能編輯地圖則隱藏新增和編輯地圖按鈕
+    if(user_json.permission.map_edit!=1){
+        addmapbtn.disabled=true
+        editmapbtn.disabled=true
+    }
+    //檢查權限，若不能編輯設備則隱藏新增設備按鈕
+    if(user_json.permission.device_edit!=1){
+        adddevicebtn.disabled=true
+    }
     //每隔2秒檢查一次server狀態和更新設備狀態
     setInterval(() => {
 
@@ -197,6 +212,7 @@ function main() {
     
 };
 function Addmaps(){ //功能為:使用讀取到的json檔案資料創建地圖
+   
     //console.log(jsonData)
     for(let mapname in jsonData){ //迭代jsonData所有key(key代表地圖名稱)
         
@@ -256,7 +272,6 @@ function Addmaps(){ //功能為:使用讀取到的json檔案資料創建地圖
         deletebtn.src='../icon/delete.png'
         deletebtn.className='MapDeleteBtn button_slide slide_left'
         deletebtn.id=mapname+'_delete'
-        
         deletebtn.addEventListener('click',(e)=>{
             //取得當前按下之刪除按鈕之id，並利用split 取得對應mapname
             let targetid=e.target.id
@@ -283,7 +298,11 @@ function Addmaps(){ //功能為:使用讀取到的json檔案資料創建地圖
         iconlistdiv.className=mapname+' div' //設定iconlistdiv之class
         //將map,delebtn加入mapdiv
         mapdiv.appendChild(map)
-        mapdiv.appendChild(deletebtn)
+
+        //檢查權限，能編輯地圖才會看到刪除地圖按鈕
+        if(user_json.permission.map_edit==1){
+            mapdiv.appendChild(deletebtn)
+        }
         //插入map iconlistdiv在btntitle上方
         leftdiv.insertBefore(mapdiv,btntitle) 
         leftdiv.insertBefore(iconlistdiv,btntitle)
@@ -355,7 +374,11 @@ function ShowWaitingDevice(){  //顯示當前地圖的未定位設備清單
 
                 //將創建完的物件加入待定位區域
                 waitingicondiv.appendChild(iconlabel)
-                waitingicondiv.appendChild(putinBtn)
+
+                //檢查權限，如果可以移動設備才會顯示定位(+)按鈕
+                if(user_json.permission.device_move==1){
+                    waitingicondiv.appendChild(putinBtn)
+                }
                 waitingIconArea.appendChild(waitingicondiv)
             }
         }
@@ -428,7 +451,7 @@ function CreateIcon(iconclass,x,y,iconcounts,devicename,url){
     element.addEventListener('contextmenu', 
     function(e){
         e.preventDefault(); //取消瀏覽器預設事件
-        showrightmenu();    //顯示移動刪除選單
+        showrightmenu();    //顯示移動編輯刪除選單
         AddRmenuEvent(this); //設定選單之事件，傳入當前element當作參數
         return false;});
 
@@ -450,6 +473,7 @@ function AddRmenuEvent(icon){
     var movebtn=$('.movebtn')[0];
     var deletebtn=$('.deletebtn')[0];
     var edit_btn = $('.editbtn')[0];
+   
     // editBTN=========================================================!
     movebtn.onclick=function(e){MoveElement(icon);}
     deletebtn.onclick=function(){
@@ -501,6 +525,19 @@ function AddRmenuEvent(icon){
         showThisDevicDataDiv.appendChild(name);
         showThisDevicDataDiv.appendChild(ip);
     }
+     //檢查權限
+     
+     if(user_json.permission.device_move!=1){//如果沒有移動設備權限，則無效化移動按鈕
+        console.log('move disabled')
+        movebtn.remove()
+        
+    }
+    if(user_json.permission.device_edit!=1){//如果沒有移動設備權限，則無效化編輯、刪除按鈕
+        console.log('edit disabled')
+        deletebtn.remove()
+        edit_btn.remove()
+    }
+    //
 }
 
 function MoveElement(icon){ //點擊'移動'之function
