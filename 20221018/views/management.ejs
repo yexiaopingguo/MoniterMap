@@ -19,8 +19,9 @@
 </head>
 <body>
     <!-- 頭部 -->
-    <div class="header">
-        <br><h1>&nbsp&nbsp&nbsp&nbsp後台管理</h1><hr>
+    <div class="header" style="padding:20px">
+        <h1 style="float:left">&nbsp&nbsp&nbsp後台管理</h1>
+        <a href="/" style="float:right"><h6>回到首頁</h6></a>
     </div>
     <div class="row col-12">
         <!-- 左側導航欄 -->
@@ -51,7 +52,79 @@
                                     <th>權限2:設備編輯</th>
                                     <th>權限3:設備移動</th>
                                     <th>權限4:僅觀看</th>
-                                    <th style="text-align: center"><button id = "Add_User" class="btn btn-dark btn-sm" style="display:none">新增用戶</button></th>
+                                    <th style="text-align: center"><button id = "Add_User" class="btn btn-dark btn-sm" data-toggle="modal" data-target =#Add_User_modal>新增用戶</button></th>
+                                    <!-- 新增用戶模态框 -->
+                                    <div class="modal fade" id="Add_User_modal">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <!-- 模态框头部 -->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">新增用戶</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" id="close_button">&times;</button>
+                                                    <script>
+                                                        // 關閉按鈕-刷新表單事件
+                                                        document.getElementById("close_button").onclick=function(){
+                                                            document.getElementById("register_name").value = ""
+                                                            document.getElementById("register_email").value = ""
+                                                            document.getElementById("register_password").value = ""
+                                                            document.getElementById("register_password_second").value = ""
+                                                            document.getElementById("err").innerHTML = ""
+                                                        }
+                                                    </script>
+                                                </div>
+                                                <!-- 模态框主体 -->
+                                                <div class="modal-body">
+                                                    <!-- 新增用戶表單信息 -->
+                                                    <form class="register-form" action="/register" method="POST">
+                                                        <label for="name">用戶名</label>
+                                                        <input type="text" name="name" style="float:right" id="register_name"/><br><br>
+                                                        <label for="email">郵箱</label>
+                                                        <input type="email" name="email" style="float:right" id="register_email"/><br><br>
+                                                        <label for="password">密碼</label>
+                                                        <input type="password" name="password" style="float:right" id="register_password"/><br><br>
+                                                        <label for="password_second">請輸入第二次密碼</label>
+                                                        <input type="password" name="password_second" style="float:right" id="register_password_second"/><br><br>
+                                                        <p style="color: red;" id="err"></p>
+                                                    </form>
+                                                </div>
+                                                <!-- 模态框底部 -->
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-secondary" id="user_create">創建</button>
+                                                    <script>
+                                                        // 創建按鈕-觸發注冊新用戶事件
+                                                        document.getElementById("user_create").onclick=function(){
+                                                            
+                                                            // 取得各欄位的值
+                                                            var register_name = document.getElementById("register_name").value
+                                                            var register_email = document.getElementById("register_email").value
+                                                            var register_password = document.getElementById("register_password").value
+                                                            var register_password_second = document.getElementById("register_password_second").value
+                                                        
+                                                            var url = '/manage'
+                                                            // 呼叫後端
+                                                            fetch(url, {
+                                                                method:'POST',
+                                                                body:`name=${register_name}&email=${register_email}&password=${register_password}&password_second=${register_password_second}`,
+                                                                headers: {
+                                                                    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+                                                                }
+                                                            })
+                                                            .then(res => {
+                                                                return res.text();
+                                                            }).then(result => {
+                                                                if (result == "success") {
+                                                                    // 刷新頁面
+                                                                    location.reload();
+                                                                } else {
+                                                                    document.getElementById("err").innerHTML = result
+                                                                }
+                                                            });
+                                                        }
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </tr>
                             </thead>
                             <!-- 表身 -->
@@ -142,7 +215,7 @@
                                                 });
                                             });
 
-                                            // 添加權限編輯功能
+                                            // 確定按鈕-添加權限編輯功能
                                             $('#<%= record['name'] %>_button').click(function(){                
                                                 // 呼叫後端
                                                 var url = '/PermissionEdit'

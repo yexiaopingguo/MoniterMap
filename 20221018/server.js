@@ -480,6 +480,89 @@ app.get('/manage', (req, res) => {
 })
 
 
+// 後台管理-新增用戶功能
+app.post('/manage', (req, res) => {
+    
+    // 用戶的資料結構
+    let user = {
+
+        // 用戶的基本信息，姓名/郵箱/密碼
+        "name": req.body.name,
+        "email": req.body.email,
+        "password": req.body.password,
+        
+        // 四個權限，采用bool值的方式
+        // 1代表具有該項權限，0代表無
+        // 預設只有觀看權限
+        
+        "permission": {
+
+            // 地圖編輯權限(新增、刪除、修改地圖)
+            "map_edit": 0,
+
+            // 設備編輯(新增、刪除、修改設備)
+            "device_edit": 0,
+
+            // 設備移動
+            "device_move": 0,
+
+            // 觀看權限
+            "view_page": 1
+        }
+    }
+
+    // 更新Users用戶信息
+    Read_Users()
+
+    // Filter過濾器
+    // 這裏先作判斷會不會同時注冊兩個一模一樣的用戶名
+    // 然後回傳是否有err
+    // 更多的過濾信息再看甲方的需求
+
+    // 使用正則表達式判斷是不是數字開頭
+    var number_head = /^[0-9]+[\s\S]*$/;
+
+    if (user.email.trim() == '' || user.password.trim() == '' || user.name.trim() == '' || req.body.password_second.trim() == '') {
+        
+        // 回報一次性的錯誤
+        return res.send("不能輸入空值")
+
+    } else if (user.password != req.body.password_second) {
+        
+        return res.send("第一次與第二次輸入的密碼不同")
+
+    } else if ( number_head.test(user.name) ) {
+
+        return res.send("用戶名不能以數字開頭")
+
+    } else {
+
+        for (let get_user of users) {
+
+            // 和資料庫比對是否注冊過該賬戶
+            if (get_user.name == user.name) {
+                return res.send("該用戶名已經被注冊過")
+            }
+            if (get_user.email == user.email) {
+                return res.send("該郵箱已經被注冊過")
+            }
+        }
+
+        // 過濾成功後開始注冊賬戶，先對緩衝區操作
+        users.push(user)
+
+        // 注冊本地private私人文件夾空間
+        // 目前甲方沒有這個需求，所以這裏沒寫，先預留空間
+        // fs.mkdir('./USER/`user.name`')
+
+        // 然後再寫入json文件
+        Write_Users()
+
+        return res.send("success")
+    }
+})
+
+
 // 後台管理-用戶管理刪除功能
 app.post('/user_delete', (req, res) => {
     
