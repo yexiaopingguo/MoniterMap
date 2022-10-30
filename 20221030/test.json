@@ -1,0 +1,14 @@
+{
+    "chart1":{
+        "devicename":"111",
+        "background-color":"blue",
+        "line-color":"black",
+        "chartType":"spline"
+    },
+    "chart2":{
+        "devicename":"222",
+        "background-color":"red",
+        "line-color":"white",
+        "chartType":"area"
+    }
+}
