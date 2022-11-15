@@ -25,7 +25,7 @@ function mapNameOption(){
         $('#mapNameListSelectId').append('<option value="'+ key + '" >' + key + '</option>');
         $('#devic_map_name').append('<option value="'+ key + '" >' + key + '</option>');
         $('#addNewDevice_MapName').append('<option value="'+ key + '" >' + key + '</option>');
-
+//主要為將表單選項放入資料
     }
 }
 
