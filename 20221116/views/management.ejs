@@ -1,0 +1,294 @@
+<!-- 後台管理頁面，搭配ejs編寫 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Management</title>
+
+    <!--use jQuery CDN to connect libary-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    <style>
+        /* 更改導航欄的color */
+        .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+            color: rgb(255, 255, 255);
+            background-color: #3d3d3d;
+        }
+    </style>
+</head>
+<body>
+    <!-- 頭部 -->
+    <div class="header" style="padding:20px">
+        <h1 style="float:left">&nbsp&nbsp&nbsp後台管理</h1>
+        <a href="/" style="float:right"><h6>回主頁</h6></a>
+    </div>
+    <div class="row col-12">
+        <!-- 左側導航欄 -->
+        <div class="col-2">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <!-- 用戶管理 -->
+                <button class="nav-link active" id="v-pills-UserManage-tab" data-toggle="pill" data-target="#v-pills-UserManage" type="button" role="tab" aria-controls="v-pills-UserManage" aria-selected="true">用戶管理</button>
+                <!-- 訪問記錄 -->
+                <button class="nav-link" id="v-pills-ViewRecords-tab" data-toggle="pill" data-target="#v-pills-ViewRecords" type="button" role="tab" aria-controls="v-pills-ViewRecords" aria-selected="false">訪問記錄</button>
+                <!-- test -->
+                <button class="nav-link" id="v-pills-test-tab" data-toggle="pill" data-target="#v-pills-test" type="button" role="tab" aria-controls="v-pills-test" aria-selected="false">其他</button>
+            </div>
+        </div>
+        <!-- 右側内容區 -->
+        <div class="col-10">
+            <div class="tab-content" id="v-pills-tabContent" style="text-align: center;">
+                <!-- 用戶管理 -->
+                <div class="tab-pane fade show active" id="v-pills-UserManage" role="tabpanel" aria-labelledby="v-pills-UserManage-tab">
+                    <!-- 响应式表格 -->
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <!-- 表头 -->
+                            <thead>
+                                <tr style="text-align: left">
+                                    <th>用戶名</th>
+                                    <th>郵箱</th>
+                                    <th>權限1:地圖編輯</th>
+                                    <th>權限2:設備編輯</th>
+                                    <th>權限3:設備移動</th>
+                                    <th>權限4:僅觀看</th>
+                                    <th style="text-align: center"><button id = "Add_User" class="btn btn-dark btn-sm" data-toggle="modal" data-target =#Add_User_modal>新增用戶</button></th>
+                                    <!-- 新增用戶模态框 -->
+                                    <div class="modal fade" id="Add_User_modal">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <!-- 模态框头部 -->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">新增用戶</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" id="close_button">&times;</button>
+                                                    <script>
+                                                        // 關閉按鈕-清空並刷新表單事件，把已經填入的所有值都設爲空
+                                                        document.getElementById("close_button").onclick=function(){
+                                                            document.getElementById("register_name").value = ""
+                                                            document.getElementById("register_email").value = ""
+                                                            document.getElementById("register_password").value = ""
+                                                            document.getElementById("register_password_second").value = ""
+                                                            document.getElementById("err").innerHTML = ""
+                                                        }
+                                                    </script>
+                                                </div>
+                                                <!-- 模态框主体 -->
+                                                <div class="modal-body">
+                                                    <!-- 新增用戶表單信息 -->
+                                                    <form class="register-form" method="POST">
+                                                        <label for="name">用戶名</label>
+                                                        <input type="text" name="name" style="float:right" id="register_name"/><br><br>
+                                                        <label for="email">郵箱</label>
+                                                        <input type="email" name="email" style="float:right" id="register_email"/><br><br>
+                                                        <label for="password">密碼</label>
+                                                        <input type="password" name="password" style="float:right" id="register_password"/><br><br>
+                                                        <label for="password_second">請輸入第二次密碼</label>
+                                                        <input type="password" name="password_second" style="float:right" id="register_password_second"/><br><br>
+                                                        <p style="color: red;" id="err"></p>
+                                                    </form>
+                                                </div>
+                                                <!-- 模态框底部 -->
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-secondary" id="user_create">創建</button>
+                                                    <script>
+                                                        // 創建按鈕-觸發注冊新用戶事件
+                                                        document.getElementById("user_create").onclick=function(){
+                                                            
+                                                            // 取得各欄位的值
+                                                            var register_name = document.getElementById("register_name").value
+                                                            var register_email = document.getElementById("register_email").value
+                                                            var register_password = document.getElementById("register_password").value
+                                                            var register_password_second = document.getElementById("register_password_second").value
+                                                        
+                                                            var url = '/register'
+                                                            // 呼叫後端
+                                                            fetch(url, {
+                                                                method:'POST',
+                                                                body:`name=${register_name}&email=${register_email}&password=${register_password}&password_second=${register_password_second}&type=${"manage"}`,
+                                                                headers: {
+                                                                    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+                                                                }
+                                                            })
+                                                            .then(res => {
+                                                                return res.text();
+                                                            }).then(result => {
+                                                                if (result == "Created Successfully") {
+                                                                    // 刷新頁面，整理表單
+                                                                    location.reload();
+                                                                } else {
+                                                                    // 如果回報的是錯誤，則輸出錯誤的驗證規則
+                                                                    document.getElementById("err").innerHTML = result
+                                                                }
+                                                            });
+                                                        }
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tr>
+                            </thead>
+                            <!-- 表身 -->
+                            <tbody>
+                                <!-- 使用ejs模板自帶的for回圈，輸出表格中的用戶資訊、權限，包括編輯、刪除按鈕 -->
+                                <% for (let record of JSON.parse(users)) { %>
+                                    <tr style="text-align: left">
+                                        <td><%= record['name'] %></td>
+                                        <td><%= record['email'] %></td>
+                                        <% if(record['permission']['map_edit'] == 1) { %>
+                                            <td>✓</td>
+                                        <% } else { %>
+                                            <td>✕</td>
+                                        <% } %>
+                                        <% if(record['permission']['device_edit'] == 1) { %>
+                                            <td>✓</td>
+                                        <% } else { %>
+                                            <td>✕</td>  
+                                        <% } %>
+                                        <% if(record['permission']['device_move'] == 1) { %>
+                                            <td>✓</td>
+                                        <% } else { %>
+                                            <td>✕</td>
+                                        <% } %>
+                                        <% if(record['permission']['view_page'] == 1) { %>
+                                            <td>✓</td>
+                                        <% } else { %>
+                                            <td>✕</td>   
+                                        <% } %>
+                                        <td style="text-align: center">
+                                            <!-- 判斷是否是超級管理者，該類管理者的用戶權限不可被編輯 -->
+                                            <% if(record['supervisor'] == 0) { %>
+                                                <button id = <%= record['name'] %>_Delete value = <%= record['name'] %> class="btn btn-dark btn-sm">刪除用戶</button>
+                                                <button id = <%= record['name'] %>_UserEdit value = <%= record['name'] %> class="btn btn-dark btn-sm" style="display:none">用戶編輯</button>
+                                                <button id = <%= record['name'] %>_PermissionEdit value = <%= record['name'] %> class="btn btn-dark btn-sm" data-toggle="modal" data-target = #<%= record['name'] %>_modal >權限編輯</button>
+                                            <% } %>
+                                        </td>
+
+                                        <!-- 模态框 -->
+                                        <div class="modal fade" id = <%= record['name'] %>_modal >
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <!-- 模态框头部 -->
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">權限編輯</h4>
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <!-- 模态框主体 -->
+                                                    <div class="modal-body">
+                                                        <form>
+                                                            <label class="radio-inline">地圖編輯:&nbsp&nbsp<input type="radio" name = <%= record['name'] %>_Permission1 value = 1 checked>✓</label>
+                                                            <label class="radio-inline"><input type="radio" name = <%= record['name'] %>_Permission1 value = 0 >✕</label>
+                                                        </form>
+                                                        <form>
+                                                            <label class="radio-inline">設備編輯:&nbsp&nbsp<input type="radio" name = <%= record['name'] %>_Permission2 value = 1 checked>✓</label>
+                                                            <label class="radio-inline"><input type="radio" name = <%= record['name'] %>_Permission2 value = 0 >✕</label>
+                                                        </form>
+                                                        <form>
+                                                            <label class="radio-inline">設備移動:&nbsp&nbsp<input type="radio" name = <%= record['name'] %>_Permission3 value = 1 checked>✓</label>
+                                                            <label class="radio-inline"><input type="radio" name = <%= record['name'] %>_Permission3 value = 0 >✕</label>
+                                                        </form>
+                                                        <form>
+                                                            <label class="radio-inline">僅觀看:&nbsp&nbsp<input type="radio" name = <%= record['name'] %>_Permission4 value = 1 checked>✓</label>
+                                                            <label class="radio-inline"><input type="radio" name = <%= record['name'] %>_Permission4 value = 0 >✕</label>
+                                                        </form>
+                                                    </div>
+                                                    <!-- 模态框底部 -->
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-secondary" id = <%= record['name'] %>_button value = <%= record['name'] %> >確定</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <script>
+                                            // 添加刪除按鈕功能
+                                            $('#<%= record['name'] %>_Delete').click(function(){
+                                                var url = '/user_delete'
+                                                // 呼叫後端
+                                                fetch(url, {
+                                                    method:'POST',
+                                                    body:`name=${this.value}`,
+                                                    headers: {
+                                                        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+                                                    }
+                                                })
+                                                .then(res => {
+                                                    return res.text();
+                                                }).then(result => {
+                                                    // 刷新頁面
+                                                    location.reload();
+                                                });
+                                            });
+
+                                            // 確定按鈕-添加權限編輯功能
+                                            $('#<%= record['name'] %>_button').click(function(){                
+                                                // 呼叫後端
+                                                var url = '/PermissionEdit'
+                                                var body = {
+                                                    // 取出單選框選中的内容
+                                                    "map_edit": document.querySelector('input[name = <%= record['name'] %>_Permission1]:checked').value,
+                                                    "device_edit": document.querySelector('input[name = <%= record['name'] %>_Permission2]:checked').value,
+                                                    "device_move": document.querySelector('input[name = <%= record['name'] %>_Permission3]:checked').value,
+                                                    "view_page": document.querySelector('input[name = <%= record['name'] %>_Permission4]:checked').value
+                                                }
+                                                fetch(url, {
+                                                    method: 'POST',
+                                                    body: `permission=${JSON.stringify(body)}&name=${this.value}`,
+                                                    headers: {
+                                                        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+                                                    }
+                                                })
+                                                .then(res => {
+                                                    return res.text();
+                                                }).then(result => {
+                                                    // 刷新頁面
+                                                    location.reload();
+                                                });
+                                            });
+
+                                        </script>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- 訪問記錄 -->
+                <div class="tab-pane fade" id="v-pills-ViewRecords" role="tabpanel" aria-labelledby="v-pills-ViewRecords-tab">
+                    <!-- 响应式表格 -->
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <!-- 表头 -->
+                            <thead>
+                                <tr>
+                                    <th>用戶名</th>
+                                    <th>郵箱</th>
+                                    <th>記錄時間</th>
+                                    <th>IP</th>
+                                    <th>登入/登出</th>
+                                </tr>
+                            </thead>
+                            <!-- 表身 -->
+                            <tbody>
+                                <%for (let record of JSON.parse(records)) {%>
+                                    <tr>
+                                        <td><%= record['name'] %></td>
+                                        <td><%= record['email'] %></td>
+                                        <td><%= record['login_time'] %></td>
+                                        <td><%= record['IP'] %></td>
+                                        <td><%= record['behavior'] %></td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-test" role="tabpanel" aria-labelledby="v-pills-test-tab">
+                    測試開發中...
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

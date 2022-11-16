@@ -1,0 +1,298 @@
+/*上方標題*/
+.header{
+    height: 10vh;
+    padding: 5px;
+    display: flex;
+    border-bottom-style:solid;
+    border-color:#21a2ff;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+/* 標題字的樣式 */
+.header-title{
+    color: white;
+    font-size: 40px;
+    font-family: "Times New Roman", Times, serif;
+}
+
+/* 按鈕靠header底 */
+.botton-set{
+    position: fixed;
+    bottom: 90vh;
+}
+
+.time{
+    color: white;
+    font-size: 20px;
+}
+
+/*test*/
+.showBG1{
+    background-color: rgb(255, 0, 0);
+}
+.showBG2{
+    background-color: rgb(255, 0, 221);
+}
+
+/*body*/
+body {
+    margin: 0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background-color: rgba(193, 193, 193, 0.75);
+}
+
+/* 左邊區塊 */
+.content-left {
+    overflow: auto;
+    height: 90vh;
+    background-color: rgba(255, 182, 55, 0.85);
+}
+
+.showmaplabel{/*顯示當前地圖名稱之label*/
+    background-color: #7fbce9;
+    border-radius: 5px;
+    padding: 4px;
+    color: #625151;
+}
+
+.icon_neme_label{/*設備清單之設備名稱樣式*/
+    padding: 4px;
+    margin-top: 1px;
+    margin-left: 30px;
+    background-color: #6c757d;
+    border: solid #ffffff 1px;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+
+.search-item{
+    padding: 10px;
+}
+
+.merge-padding-no{
+    margin:0;
+    padding:0
+}
+
+/* 中央區塊menu */
+.content-menu{
+    height: 7vh;
+    background-color: rgb(0, 47, 108 , 1);
+}
+
+/* 高度置中 */
+.container-h-md{
+    display: flex;
+    align-items: center; 
+}
+
+
+/* 圖片大小設定 */
+.img-icon{
+    width: 20px;
+    height: 20px;
+}
+
+/*btn*/
+
+.btn-set{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+} 
+
+.map-main-img{
+    width: 1120px;
+    height: 630px;
+    overflow: hidden;
+}
+
+.main-loc{
+    position: fixed;
+    right: 20vh;
+    bottom: 10vh;
+}
+
+/* .img-small{
+    width: 10px;
+    height: 10px;
+} */
+
+.range-text-set{
+    color: white;
+    font-size: 15px;
+    font-family: "Times New Roman", Times, serif;
+}
+
+.group-text-set{
+    color: rgb(76, 76, 76);
+    font-size: 15px;
+    font-family: "Times New Roman", Times, serif;
+}
+
+
+/* tab標籤頁 */
+.nav-link{
+    color: white;
+}
+
+.ourtab{
+    border-bottom-style:solid;
+    border-color:#21a2ff;
+    height:10vh;
+    overflow: hidden;
+}
+
+/*背景地圖*/
+.backgroundimg{
+    width: 90%;
+    height: 90%;
+    margin-top: 15px;
+    margin-bottom: 40px;
+    position: absolute;    
+}
+
+/*地圖與icon之父層div*/
+.imgcontainer {
+                
+    height: 100%;
+    display: flex;          
+    overflow: hidden;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    margin:0 10%;
+}
+/*Icon*/
+.element{
+    width:auto;
+    height:auto;
+    position:absolute;
+    
+}
+/*左側欄div*/
+.leftcontainer{
+    float:left;  
+    height: 100%;
+    width:100%;
+
+}
+/*取消放置icon之按鈕*/
+.cancel{
+display:none
+}
+
+/*右鍵icon選單*/
+.rmenu{
+    height:auto;
+    width: auto;
+    margin: auto;
+    background: white;
+    display: none;
+    position: absolute;
+    border:1px;
+    z-index:999;
+    cursor: default;
+}
+
+/*選單之'移動'之滑鼠進入事件*/
+.movebtn:hover{
+    background: rgb(168, 203, 248);
+}
+/*選單之'刪除'之滑鼠進入事件*/
+.deletebtn:hover{
+    background-color:red;
+}
+.editbtn:hover{
+    background-color:gray;
+}
+/*Icon清單之清單內容*/
+.iconlabel{
+    padding-left: 40px;
+}
+
+.monitorButton , .lampButton , .cancel{
+    margin: 5px;
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.classTitle{
+    padding-left: 20px;
+    color:red;
+}
+.screen{
+    display: none;
+}
+
+.deviceInfoContainer{
+    position:absolute;
+    display:none;
+    flex-direction: column;
+    text-align: right;
+    background-color:white;
+    border-style: solid;
+    border-width: 3px;
+    z-index: 999;
+    
+}
+.deviceinfo{
+    padding: 10px;
+    display: inline-block;
+}
+.infolabel{
+    
+    width: 64px;
+    height: 24px;
+}
+.infoinput{
+    height: 24px;
+}
+.screen{
+    position:absolute;
+}
+.screenbackdiv{
+    background-color: white;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-color: black;
+    border-width: 3px;
+    border-style: solid;
+    z-index: 997;
+}
+.mainscreen{
+    width: 320px;
+    height: 240px;
+    padding: 20px;
+    z-index: 998;
+}
+.Zoomscreen{
+    position:absolute;
+    top: 220px;
+    left: 300px;
+    z-index: 999;
+}
+.Closescreen{
+    position:absolute;
+    top: 2px;
+    left: 300px;
+    z-index: 999;
+}
+
+.nested {
+    display: none;
+}
+  
+.active {
+    display: block;
+}
+
