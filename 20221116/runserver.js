@@ -13,11 +13,10 @@ cp.on('close',(code)=>{
     console.log('exit')
 })
 
-var counter=0;
-
+//接收來自用戶端的刷新server請求，重新啟動server程式
+//cp物件為子進程(child_process)，指定為開啟server的指令
+//對cp物件做kill和spawn即可達成重新啟動server的任務
 app.get('/restart',(req,res)=>{
-    console.log('restart'+counter)
-    counter=counter+1
     cp.kill();
     cp=spawn('node', ['server.js'])
     console.log('res')

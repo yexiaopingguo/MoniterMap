@@ -441,30 +441,38 @@ function CreateIcon(iconclass,x,y,iconcounts,devicename,url){
     element.style.marginLeft = x;
     element.style.marginTop = y;
 
-    element.addEventListener('dblclick',(e)=>{
-        var e=window.event;
-        console.log(url)
-        console.log(devicedict)
-        //將選單位置設為滑鼠右鍵點擊icon時位置，並顯示
+    //當設備類別為Monitor時，加入雙擊開啟鏡頭畫面事件
+    if(iconclass=='monitor'){
+        element.addEventListener('dblclick',(e)=>{
+            var e=window.event;
+            //console.log(url)
+            //console.log(devicedict)
 
-        mainscreen.remove()
-        let newscreen=document.createElement('canvas')
-        newscreen.className='mainscreen'
-        newscreen.id='canvas_5000'
-        screen.appendChild(newscreen)
-        mainscreen=$('.mainscreen')[0]
+            //暫停播放，以避免瀏覽器過載
+            if(player!=undefined){
+                player.pause()
+            }
 
-        player = new JSMpeg.Player(`ws://localhost:${devicedict[url]}`, {
-			canvas: document.getElementById('canvas_5000'),
-			autoplay:true,//是否自动播放
-			loop:true,
-		});
-        console.log(player)
-        
-        screen.style.left = e.clientX + 'px';
-        screen.style.top = e.clientY + 'px';
-        screen.style.display = 'flex';
-    })
+            //重新建立撥放器物件
+            mainscreen.remove()
+            let newscreen=document.createElement('canvas')
+            newscreen.className='mainscreen'
+            newscreen.id='canvas_5000'
+            screen.appendChild(newscreen)
+            mainscreen=$('.mainscreen')[0]
+            //依據url不同，連接不同的串流路徑
+            player = new JSMpeg.Player(`ws://localhost:${devicedict[url]}`, {
+                canvas: document.getElementById('canvas_5000'),
+                autoplay:true,//是否自动播放
+            });
+
+            //使撥放器出現於滑鼠位置
+            screen.style.left = e.clientX + 'px';
+            screen.style.top = e.clientY + 'px';
+            screen.style.display = 'flex';
+        })
+    }
+
     //設定右鍵觸發事件
     element.addEventListener('contextmenu', 
     function(e){
@@ -656,16 +664,25 @@ function ClearIconList(){ //清除所有顯示的iconlist
 function ShowIconList(){ //掃描當前所有icon，並顯示於iconlist
     
     let targetdiv=$(`.${cur_map}`)[0] //目標div 假如當前map=first,則找到'first div'
-    
+
+    //icondict為dictionary型台物件，key,value分別對應 設備類別 、對應圖示之路徑
+    //對icondict的key做循序走訪，即可分別處理每個設備類別
     for(let iconclass in icondict){
-        let icons=$(`.${iconclass}`)
+
+        let icons=$(`.${iconclass}`)//找到當前地圖中，class屬性屬於當前走訪的類別之所有設備，儲存成list
+
+        //如果該list無內容，則代表當前地圖沒有指定類別的設備
         if(icons.length==0){
             continue;
         }
+
+        //將當前設備類別名稱以label顯示
         let classTitle=document.createElement('label')
         classTitle.id=`classTitle ${iconclass}`
         classTitle.innerHTML=iconclass
         classTitle.className='classTitle'
+
+        //將所有找到的設備名稱製作成label，加入一個div中
         let icondiv=document.createElement('div')
         for(let i=0;i<icons.length;i++){
             let icon=icons[i]
@@ -677,6 +694,7 @@ function ShowIconList(){ //掃描當前所有icon，並顯示於iconlist
             icondiv.appendChild(iconlabel)
             icondiv.appendChild(br)
         }
+        //將創建好的類別名稱label以及設備列表div加入對應地圖之下
         targetdiv.appendChild(classTitle)
         targetdiv.appendChild(icondiv)
 
