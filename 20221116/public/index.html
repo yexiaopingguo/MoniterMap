@@ -65,7 +65,35 @@
                     </div>
                 </div>
             </div>
-
+            <button  id="ChangePasswordBtn" class="btn btn-primary" data-toggle="modal" data-target="#ChangePassword">
+                變更密碼
+            </button>
+            <div class="modal fade" id="ChangePassword">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                            <!-- 模态框头部 -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">變更密碼</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <form  method="post" action="/ChangePassword" onsubmit="CheckOrdinaryPassword()" >
+                            <!-- 模态框主体 -->
+                            <div class="modal-body">
+                                <input type="text" name="UserName" style="display:none" id="user_name_for_changepwd">
+                                <input type="text" name="Email" style="display:none" id="email_for_changepwd">
+                                <label for="ordinary_password">原密碼</label>
+                                <input type="text" name="OrdinaryPassword" class="form-control" id="ordinary_password" placeholder="原密碼" required/>
+                                <label for= "new_password">新密碼</label>
+                                <input type="text" name="NewPassword" class="form-control" id= "new_password" placeholder="新密碼" required/>
+                            </div>
+                            <!-- 模态框底部 -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-secondary" >確認</button>   
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             
             <span id="time" class="time mr-3"></span>
             <form action="/logout" method="POST">

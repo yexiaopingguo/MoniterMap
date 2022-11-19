@@ -924,4 +924,31 @@ app.post('/editOldDevicPost', (req,res)=>{
     //刷新頁面並指定當前地圖為目標地圖(讓使用者能接續操作)
 })
 
+//變更密碼事件
+app.post('/ChangePassword',(req,res)=>{
+
+    //取出用戶端傳遞的資料
+    let username=req.body.UserName
+    let email=req.body.Email
+    let ordinary_password=req.body.OrdinaryPassword
+    let new_password=req.body.NewPassword
+
+    //走訪users陣列，找到指定的user
+    for(let i=0;i<users.length;i++){
+        let user=users[i]
+        if((user.email==email)&&(user.name==username)){
+            //判斷使用者輸入之舊密碼是否正確
+            if(ordinary_password==user.password){//正確，將密碼改為新密碼
+                users[i].password=new_password
+            }
+            else{//錯誤，回傳204狀態碼
+                return res.sendStatus(204)
+            }
+        }
+        
+    }
+    //將新資訊寫入json檔案
+    Write_Users ()
+    res.sendStatus(204)
+})
 

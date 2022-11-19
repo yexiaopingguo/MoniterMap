@@ -62,6 +62,11 @@ var user_permission = document.getElementById("user_permission")     // 頁面�
 
 var permissionbtn=$('#permission_manage')[0]//權限管理按鈕
 
+//變更密碼按鈕
+var changePwdBtn=$('#ChangePasswordBtn')[0]
+//變更密碼表單之元素
+var username=$('#user_name_for_changepwd')[0]//使用者名稱
+var userEmail=$('#email_for_changepwd')[0]//使用者email
 
 // ----------------------------------------------------------------------------------------
 // 登入
@@ -90,12 +95,16 @@ fetch('/get_user_data', {
 .then(data=>{
     user_json = JSON.parse(data);
     console.log(data)    // 把當前登入的賬號印在開發者工具F12中
+    console.log(username)
+    username.value=user_json.name//將變更密碼表單中「user_name」欄位的值設定為目前的使用者名稱
+    userEmail.value=user_json.email//將變更密碼表單中「user_email」欄位的值設定為目前的使用者email
 
     // 讀取用戶資訊動態寫入主頁的用戶對話框中
     if (user_json.name == 'tourist') {
         user_name.innerHTML = "用戶：游客模式"
         user_email.innerHTML = ""
         user_permission.innerHTML = "使用權限：<br>● 僅瀏覽"
+        changePwdBtn.disabled=true//遊客模式下，取消變更密碼按鈕
     } else {
         user_name.innerHTML = `用戶：${user_json.name}`
         user_email.innerHTML = `郵箱：${user_json.email}`
@@ -945,4 +954,32 @@ function checkserver(url) {
     /////////
 
     req.send()//發送請求
+}
+
+function CheckOrdinaryPassword(){
+    //取得使用者原始密碼
+    let ordinary_password=user_json.password
+
+    //取得使用者輸入的原始密碼、新密碼
+    let entered_ordinary_password=$('#ordinary_password')[0].value
+    let entered_new_password=$('#new_password')[0].value
+
+    //確認使用者輸入的原始密碼是否為真正的原始密碼
+    if(entered_ordinary_password!=ordinary_password){//輸入錯誤
+        //跳出警告
+        alert('原密碼輸入錯誤')
+        return
+    }
+    else if(entered_new_password==entered_ordinary_password){//如果新密碼=舊密碼
+        alert('新密碼不可與舊密碼相同')
+        return
+    }
+    else{//輸入正確
+
+        //變更記憶體中user_json的密碼資料
+        user_json.password=entered_new_password
+        //觸發變更密碼按鈕的click事件，關閉視窗
+        $('#ChangePasswordBtn')[0].click()
+    }
+    
 }
